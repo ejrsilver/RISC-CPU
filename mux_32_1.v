@@ -1,33 +1,33 @@
 module mux_32_1(
-  input wire [31:0] R0_busin;
-  input wire [31:0] R1_busin;
-  input wire [31:0] R2_busin;
-  input wire [31:0] R3_busin;
-  input wire [31:0] R4_busin;
-  input wire [31:0] R5_busin;
-  input wire [31:0] R6_busin;
-  input wire [31:0] R7_busin;
-  input wire [31:0] R8_busin;
-  input wire [31:0] R9_busin;
-  input wire [31:0] R10_busin;
-  input wire [31:0] R11_busin;
-  input wire [31:0] R12_busin;
-  input wire [31:0] R13_busin;
-  input wire [31:0] R14_busin;
-  input wire [31:0] R15_busin;
+  input wire [31:0] R0_busin,
+  input wire [31:0] R1_busin,
+  input wire [31:0] R2_busin,
+  input wire [31:0] R3_busin,
+  input wire [31:0] R4_busin,
+  input wire [31:0] R5_busin,
+  input wire [31:0] R6_busin,
+  input wire [31:0] R7_busin,
+  input wire [31:0] R8_busin,
+  input wire [31:0] R9_busin,
+  input wire [31:0] R10_busin,
+  input wire [31:0] R11_busin,
+  input wire [31:0] R12_busin,
+  input wire [31:0] R13_busin,
+  input wire [31:0] R14_busin,
+  input wire [31:0] R15_busin,
   
-  input wire [31:0] HI_busin;
-  input wire [31:0] LO_busin;
+  input wire [31:0] HI_busin,
+  input wire [31:0] LO_busin,
   
-  input wire [31:0] Zhi_busin;
-  input wire [31:0] Zlo_busin;
+  input wire [31:0] Zhi_busin,
+  input wire [31:0] Zlo_busin,
   
-  input wire [31:0] PC_busin;
-  input wire [31:0] MDR_busin;
-  input wire [31:0] InPort_busin;
-  input wire [31:0] C_sign_extend;
+  input wire [31:0] PC_busin,
+  input wire [31:0] MDR_busin,
+  input wire [31:0] InPort_busin,
+  input wire [31:0] C_sign_extend,
 
-  input wire [4:0] select
+  input wire [4:0] select,
   output reg [31:0] mux_out
 );
   
