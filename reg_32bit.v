@@ -1,4 +1,4 @@
-module reg_32bit(input wire [31:0] D, input wire clk, reset, enable, output reg [31:0] q);
+module reg_32bit(input [31:0] D, input clk, reset, enable, output reg [31:0] q);
   initial q = 0;
   
   always @(posedge clk) begin
