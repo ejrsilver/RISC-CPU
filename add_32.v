@@ -3,8 +3,8 @@ module add_32(input [31:0] A, B,
               output [31:0] Z,
              output Cout);
   wire cout1;
-  add_16 a1 A[15:0],B[15:0],Cin,Z[15:0],cout1);
-  add_16 a2 A[31:16],B[31:16],cout1,Z[31:16],Cout);
+  add_16 a1 (A[15:0],B[15:0],Cin,Z[15:0],cout1);
+  add_16 a2 (A[31:16],B[31:16],cout1,Z[31:16],Cout);
 endmodule
   
   

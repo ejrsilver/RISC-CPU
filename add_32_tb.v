@@ -2,7 +2,9 @@
 
 module add_32_tb;
 
-  reg[31:0] input_a, input_b, cin, cout;
+  reg[31:0] input_a, input_b; 
+  reg cin;
+  wire cout;
   wire[31:0] add_result;
 
   add_32 add_instance(input_a, input_b, cin, add_result, cout);

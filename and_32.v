@@ -6,7 +6,7 @@ module and_32(
   genvar i;
   
   generate
-    for (i = 0; i < 32; i=i+1) begin
+    for (i = 0; i < 32; i=i+1) begin : AND_BLOCK
       assign Z[i] = A[i]&B[i];
     end
   endgenerate
