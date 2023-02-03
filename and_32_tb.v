@@ -1,6 +1,6 @@
 `timescale 1ns/10ps
 
-module and_tb;
+module and_32_tb;
 
 	reg[31:0] input_a, input_b;
 	wire[31:0] and_result;
