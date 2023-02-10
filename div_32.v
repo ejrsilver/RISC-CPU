@@ -1,28 +1,25 @@
 module div_32(input [31:0] divisor, dividend, output reg [31:0] q, r);
   
   reg check, C;
-  reg [31:0] opp, temp;
-  always @(*)
-    begin
-      check = 0;
-      q = 0;
-      opp = dividend;
-      
-      while(temp == 0)
-        begin
-   
-          if(opp<divisor)
-            begin
-              r = opp;
-              temp = 1;
-            end
-          
-          if(opp>divisor || opp == divisor)
-            begin
-              sub_32 S1(opp,divisor,0,temp,C);
-              opp = temp;
-              add_32 A1(q,1,0,temp,C);
-              q = temp;
-            end
+  reg [63:0] A;
+  A[31:0] = dividend;
+  
+  genvar i;
+  generate 
+    for(int i = 0;i < 32;i = i + 1) begin
+      A = A<<1;
+      A[63:32] = A[63:32] - divisor;
+      if(A[63:32]<0) 
+        begin 
+          A[0] = 0;
+          A[63:32] = A[63:32] + divisor;
         end
-      endmodule
+      if(A[63:32] > 0 || A[63:32] == 0)
+        begin
+          A[0] = 1;
+        end
+    end
+   endgenerate
+  r = A[63:32];
+  q = A[31:0];
+endmodule
