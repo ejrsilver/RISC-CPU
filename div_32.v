@@ -1,6 +1,4 @@
 module div_32(input [31:0] divisor, dividend, output reg [31:0] q, r);
-  
-  reg check, C;
   reg [63:0] A;
   A[31:0] = dividend;
   
