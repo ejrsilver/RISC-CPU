@@ -1,4 +1,5 @@
-module add_32(input [31:0] A, B,
+module add_32(input [31:0] A, 
+	      input [31:0] B,
               input Cin,
               output [31:0] Z,
              output Cout);

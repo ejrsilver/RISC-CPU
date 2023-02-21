@@ -1,51 +1,52 @@
 module mul_32(
-	input [31:0] B, A,
+	input signed [31:0] A, B,
 	output [31:0] HI, LO
 );
-	reg [64:0] temp;
-	reg [2:0] A_for_booth[15:0];
-	
- 	reg [63:0] product;
-	
-	wire cin;
-	assign cin = 0;
-	wire cout;
-	wire [32:0] N_A;
-	wire [32:0] N_A_2;
-	wire [32:0] A_2;
-  
-	integer j,i;
-	
-	neg_32(A, N_A);
-	shl_32(A, A_2);
-	shl_32(N_A, N_A_2);
-	
-	
-  always @ (A or B)
+	reg [2:0] B_for_booth[15:0];
+	reg signed [32:0] pp [15:0];
+	reg signed [63:0] spp [15:0];
+	reg signed [63:0] temp;
+
+	wire signed [31:0] N_A;
+	wire signed [31:0] N_A_2;
+	wire signed [31:0] A_2;
+
+	integer j;
+
+	assign N_A = -A;
+	assign A_2 = A<<1;
+	assign N_A_2 = N_A<<1;
+
+  always @ (A or B or N_A)
 	begin
-		A_for_booth[0] = {b[1], b[0], 0};
-		
-		for (j=1; j < 32; j = j+2)
-			A_for_booth[j] = {b[j+1], b[j], b[j-1]};
-			
-    		for (j=0; j < 16; j = j+1) begin	
-			case(A_for_booth[j])
-				3'b001 : 
-					add_32(B,A,cin,temp[31+2*j:0+2*j],temp[32+2*j]);
-				3'b010 :
-					add_32(B,A,cin,temp[31+2*j:0+2*j],temp[32+2*j]);
+		B_for_booth[0] = {B[1], B[0], 1'b0};
+
+		for (j=1; j < 16; j = j+1) begin
+			B_for_booth[j] = {B[2*j+1], B[2*j], B[2*j-1]};
+		end
+    		
+		for (j=0; j < 16; j = j+1) begin
+			case(B_for_booth[j])
+				3'b001, 3'b010 :
+					pp[j] = {A[31],A};
 				3'b011 :
-					add_32(B,A_2,cin,temp[31+2*j:0+2*j],temp[32+2*j]);
+					pp[j] = {A_2[31],A_2};
 				3'b100 :
-					add_32(B,N_A_2,cin,temp[31+2*j:0+2*j],temp[32+2*j]);
-				3'b101 :
-					add_32(B,N_A,cin,temp[31+2*j:0+2*j],temp[32+2*j]);
-				3'b110 :
-					add_32(B,N_A,cin,temp[31+2*j:0+2*j],temp[32+2*j]);
+					pp[j] = {N_A_2[31],N_A_2};
+				3'b101, 3'b110 :
+					pp[j] = {N_A[31],N_A};
 				default :
+					pp[j] = 0;
 			endcase
+
+			spp[j] = pp[j] << (2*j);
+		end
+
+		temp = spp[0];
+		for (j=1; j < 16; j=j+1) begin
+			temp = temp + spp[j];
 		end
 	end
-assign HI[31:0] = temp[63:32];
-assign LO[31:0] = temp[31:0];				
+	assign HI = temp[63:32];
+	assign LO = temp[31:0];
 endmodule

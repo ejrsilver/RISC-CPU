@@ -6,7 +6,7 @@ module not_32(
   genvar i;
   
   generate
-    for (i = 0; i < 32; i=i+1) begin
+    for (i = 0; i < 32; i=i+1) begin : NOT_BLOCK
       assign Z[i] = !A[i];
     end
   endgenerate

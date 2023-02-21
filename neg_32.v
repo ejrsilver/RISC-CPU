@@ -6,5 +6,5 @@ module neg_32(
   wire [31:0] inter;
   wire cout;
   not_32 NOT_inst(A,inter);
-  add_32 ADD_inst(inter, 1, 0, Z, cout);
+  add_32 ADD_inst(inter, 1, 1'b0, Z, cout);
 endmodule
