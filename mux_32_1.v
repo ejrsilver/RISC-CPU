@@ -28,7 +28,7 @@ module mux_32_1(
   input [31:0] C_sign_extend,
 
   input [4:0] select,
-  output [31:0] mux_out
+  output reg [31:0] mux_out
 );
   
   always @(*) begin

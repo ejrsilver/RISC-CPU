@@ -7,16 +7,16 @@ module datapath(
 	input MARin, Zin, PCin, MDRin, IRin, Yin,
 	input IncPC,
 	input Read, 
-    input wire [4:0] opcode,
+   input wire [4:0] opcode,
 	input R1in, R2in, R3in,
-    input clk,
-	input [31:0] MDatain,
+   input clk,
+	input [31:0] MDatain
 );
 
 	wire [31:0] RAM_out, C_out_HI, C_out_LO, InPort_busin, IR_busin, PC_busin, Y_busin, ZHI_busin, 
 				ZLO_busin, C_sign_extend, HI_busin, LO_busin, R0_busin, R1_busin, R2_busin, 
 				R3_busin, R4_busin, R5_busin, R6_busin, R7_busin, R8_busin, R9_busin, 
-				R10_busin, R11_busin, R12_busin, R13_busin, R14_busin, R15_busin;
+				R10_busin, R11_busin, R12_busin, R13_busin, R14_busin, R15_busin, MDR_busin;
 
 	wire [31:0] busout;
 	wire clr;
@@ -67,7 +67,7 @@ module datapath(
 	// IR will be used for select and encode logic in phase 2
 	reg_32 IR (clk, clr, IRin, busout, IR_busin);
 
-	MDR_reg_32 MDR (clk, clr, MDRin, Read, Mdatain, busout, MDR_busin);
+	MDR_reg_32 MDR (clk, clr, MDRin, Read, MDatain, busout, MDR_busin);
 
 	// Space for IO, MAR, RAM, Con FF, and other stuff
 
@@ -77,7 +77,7 @@ module datapath(
 
 	mux_32_1 bus_mux (R0_busin, R1_busin, R2_busin, 
 					R3_busin, R4_busin, R5_busin, 
-					R6_busin. R7_busin, R8_busin, 
+					R6_busin, R7_busin, R8_busin, 
 					R9_busin, R10_busin, R11_busin, 
 					R12_busin, R13_busin, R14_busin, 
 					R15_busin, HI_busin, LO_busin, 

@@ -4,7 +4,7 @@ module alu(
     input clk, IncPC,
     input [31:0] B, Y,
     input [4:0] opcode,
-    output [31:0] HI, LO
+    output reg [31:0] HI, LO
 );
 
 parameter   _add  = 5'b00011, _sub = 5'b00100, _and = 5'b00101, _or  = 5'b00110, _shr  = 5'b00111, 
@@ -14,6 +14,7 @@ parameter   _add  = 5'b00011, _sub = 5'b00100, _and = 5'b00101, _or  = 5'b00110,
 
 
 wire[31:0]  or_out,    and_out, rol_out,  ror_out,   shl_out,   shr_out,
+				addi_out,  andi_out,ori_out,
             shra_out,  not_out, neg_out,  HImul_out, LOmul_out, HIdiv_out,
             LOdiv_out, add_out, sub_out,  incPC_out;
 wire add_cout, sub_cout;
@@ -31,7 +32,7 @@ not_32  NOT (B, not_out);
 neg_32  NEG (B, neg_out);
 
 mul_32  MUL (Y, B, HImul_out, LOmul_out);
-div_32  DIV (Y, B, HIdiv_out, LOdiv_out);
+divide_32  DIV (Y, B, HIdiv_out, LOdiv_out);
 
 add_32  ADD (Y, B, 1'b0, add_out, add_cout);
 sub_32  SUB (Y, B, 1'b0, sub_out, sub_cout);
@@ -39,7 +40,8 @@ incPC   INC (Y, IncPC, incPC_out);
 
 always @(*) begin
     if (IncPC==1) begin
-        PC_out <= IncPC_out;
+        LO <= incPC_out;
+		  HI <= 32'd0;
     end
     case (opcode)
         _add: begin
@@ -91,12 +93,12 @@ always @(*) begin
             HI <= 32'd0;
         end
          _mul: begin
-            LO <= mul_out;
-            HI <= 32'd0;
+            LO <= LOmul_out;
+            HI <= HImul_out;
         end
         _div: begin
-            LO <= div_out;
-            HI <= 32'd0;
+            LO <= LOdiv_out;
+            HI <= HIdiv_out;
         end
         _neg: begin
             LO <= neg_out;
@@ -112,3 +114,4 @@ always @(*) begin
         end
     endcase
 end
+endmodule

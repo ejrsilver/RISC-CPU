@@ -1,6 +1,6 @@
 module encoder_32_5(
   input [31:0] in,
-  output wire[4:0] encoder_out
+  output reg [4:0] encoder_out
 );
   always @(*) begin
     case(in)
