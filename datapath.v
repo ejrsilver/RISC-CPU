@@ -70,10 +70,17 @@ module datapath(
 	MDR_reg_32 MDR (clk, clr, MDRin, Read, MDatain, busout, MDR_busin);
 
 	// Space for IO, MAR, RAM, Con FF, and other stuff
-
-
-
+	
 	wire [4:0] encoder_out;
+
+	encoder_32_5 bus_enc ({R0_busin, R1_busin, R2_busin, 
+					R3_busin, R4_busin, R5_busin, 
+					R6_busin, R7_busin, R8_busin, 
+					R9_busin, R10_busin, R11_busin, 
+					R12_busin, R13_busin, R14_busin, 
+					R15_busin, HI_busin, LO_busin, 
+					ZHI_busin, ZLO_busin, PC_busin, 
+					MDR_busin, InPort_busin, C_sign_extend, 8'd0}, encoder_out);
 
 	mux_32_1 bus_mux (R0_busin, R1_busin, R2_busin, 
 					R3_busin, R4_busin, R5_busin, 

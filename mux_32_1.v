@@ -15,18 +15,14 @@ module mux_32_1(
   input [31:0] R13_busin,
   input [31:0] R14_busin,
   input [31:0] R15_busin,
-  
   input [31:0] HI_busin,
   input [31:0] LO_busin,
-  
   input [31:0] Zhi_busin,
   input [31:0] Zlo_busin,
-  
   input [31:0] PC_busin,
   input [31:0] MDR_busin,
   input [31:0] InPort_busin,
   input [31:0] C_sign_extend,
-
   input [4:0] select,
   output reg [31:0] mux_out
 );
@@ -36,7 +32,7 @@ module mux_32_1(
       5'd0 : mux_out <= R0_busin[31:0];
       5'd1 : mux_out <= R1_busin[31:0];
       5'd2 : mux_out <= R2_busin[31:0];
-      5'd3 : mux_out <= R3_busin[31:0];      
+      5'd3 : mux_out <= R3_busin[31:0];
       5'd4 : mux_out <= R4_busin[31:0];
       5'd5 : mux_out <= R5_busin[31:0];
       5'd6 : mux_out <= R6_busin[31:0];
