@@ -4,7 +4,7 @@ module alu(
     input clk, IncPC,
     input [31:0] B, Y,
     input [4:0] opcode,
-    output [31:0] HI, LO, PC_out
+    output [31:0] HI, LO
 );
 
 parameter   _add  = 5'b00011, _sub = 5'b00100, _and = 5'b00101, _or  = 5'b00110, _shr  = 5'b00111, 
@@ -15,7 +15,8 @@ parameter   _add  = 5'b00011, _sub = 5'b00100, _and = 5'b00101, _or  = 5'b00110,
 
 wire[31:0]  or_out,    and_out, rol_out,  ror_out,   shl_out,   shr_out,
             shra_out,  not_out, neg_out,  HImul_out, LOmul_out, HIdiv_out,
-            LOdiv_out, add_out, add_cout, sub_out,   sub_cout,  incPC_out;
+            LOdiv_out, add_out, sub_out,  incPC_out;
+wire add_cout, sub_cout;
 
 // Operations 
 or_32   OR  (Y, B, or_out);

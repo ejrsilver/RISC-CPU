@@ -4,17 +4,17 @@ module datapath(
 	input ZHighout, ZLowout,
 	input MDRout,
 	input R2out, R3out,
-	input MARin, PCin, MDRin, IRin, Yin,
+	input MARin, Zin, PCin, MDRin, IRin, Yin,
 	input IncPC,
-	input Read,
+	input Read, 
     input wire [4:0] opcode,
-	input R1in, R2in, R3in, 
+	input R1in, R2in, R3in,
     input clk,
 	input [31:0] MDatain,
 );
 
-	wire [31:0] RAM_out, ZHighin, ZLowin, C_out, PC_busin, Y_busin, ZHI_busin, 
-				ZLO_busin, HI_busin, LO_busin, R0_busin, R1_busin, R2_busin, 
+	wire [31:0] RAM_out, C_out_HI, C_out_LO, InPort_busin, IR_busin, PC_busin, Y_busin, ZHI_busin, 
+				ZLO_busin, C_sign_extend, HI_busin, LO_busin, R0_busin, R1_busin, R2_busin, 
 				R3_busin, R4_busin, R5_busin, R6_busin, R7_busin, R8_busin, R9_busin, 
 				R10_busin, R11_busin, R12_busin, R13_busin, R14_busin, R15_busin;
 
@@ -57,17 +57,17 @@ module datapath(
 	reg_32 r15 (clk, clr, enableReg[15], busout, R15_busin);
 
 	// Other
-	reg_32 PC (clk, clr, PCin, PCout, PC_busin);
+	reg_32 PC (clk, clr, PCin, busout, PC_busin);
 	reg_32 Y (clk, clr, Yin, busout, Y_busin);
-	reg_32 Z_HI (clk, clr, ZHighin, C_out, ZHI_busin);
-	reg_32 Z_LO (clk, clr, ZLowin, C_out, ZLO_busin);
+	reg_32 Z_HI (clk, clr, Zin, C_out_HI, ZHI_busin);
+	reg_32 Z_LO (clk, clr, Zin, C_out_LO, ZLO_busin);
 	reg_32 HI (clk, clr, HIin, busout, HI_busin);
 	reg_32 LO (clk, clr, LOin, busout, LO_busin);
 
 	// IR will be used for select and encode logic in phase 2
 	reg_32 IR (clk, clr, IRin, busout, IR_busin);
 
-	MDR_reg_32 MDR (clk, clr, MDRin, Mdatain, busout, Read, MDR_busin);
+	MDR_reg_32 MDR (clk, clr, MDRin, Read, Mdatain, busout, MDR_busin);
 
 	// Space for IO, MAR, RAM, Con FF, and other stuff
 
@@ -85,6 +85,6 @@ module datapath(
 					MDR_busin, InPort_busin, C_sign_extend, 
 					encoder_out, busout);
 
-	alu alu_(clk, IncPC, busout, busout, opcode, ZHighout, Zlowout, PCout);
+	alu alu_(clk, IncPC, busout, busout, opcode, C_out_HI, C_out_LO);
 
 endmodule

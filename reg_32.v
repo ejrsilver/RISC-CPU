@@ -1,4 +1,4 @@
-module reg_32(input clk, reset, enable, input [31:0] D, output [31:0] q);
+module reg_32(input clk, reset, enable, input [31:0] D, output reg [31:0] q);
   initial q = 0;
   
   always @(posedge clk) begin

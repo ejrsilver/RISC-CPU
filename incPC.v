@@ -3,7 +3,7 @@ module incPC(
     input IncPC,
     output [31:0] PCout
 );
-
-add_32 ADD(PCin, 1, PCout);
+wire pc_cout;
+add_32 ADD(PCin, 32'd1, 32'b1, PCout, pc_cout);
 
 endmodule
