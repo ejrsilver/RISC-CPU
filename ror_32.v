@@ -9,7 +9,7 @@ module ror_32(
   //assign t = t>>31-num_rotate;
   //assign Z = A<<num_rotate | t;
   
-  shl_32 SL(A, 31-num_rotate, t);
+  shl_32 SL(A, 32-num_rotate, t);
   shr_32 SR2(A, num_rotate, t2);
   or_32 OR(t2, t, Z);
 
