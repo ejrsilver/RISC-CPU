@@ -5,13 +5,9 @@ module rol_32(
   genvar i;
   wire [31:0] t;
   wire [31:0] t2;
-  //assign t = A<<31-num_rotate;
-  //assign t = t>>31-num_rotate;
-  //assign Z = A<<num_rotate | t;
   
-  shl_32 SL(A, 31-num_rotate, t);
-  shr_32 SR(t, 31-num_rotate, t);
-  shr_32 SR2(A, num_rotate, t2);
+  shl_32 SL(A, num_rotate, t);
+  shr_32 SR(A, 32-num_rotate, t2);
   or_32 OR(t2, t, Z);
 
 endmodule
