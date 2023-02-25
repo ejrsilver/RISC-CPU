@@ -4,7 +4,6 @@ module divide_32(input [31:0] divisor, dividend, output [31:0] quot, rem);
 	
 	integer i;
 	always @(*) begin
-        begin
             q = dividend;
             m = divisor;
             a = 0;
@@ -23,7 +22,6 @@ module divide_32(input [31:0] divisor, dividend, output [31:0] quot, rem);
 				end
             end
         end
-	end
 	assign rem = a[63:32];
 	assign quot = a[31:0];
 endmodule
