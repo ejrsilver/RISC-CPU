@@ -14,6 +14,7 @@ parameter   _add  = 5'b00011, _sub = 5'b00100, _and = 5'b00101, _or  = 5'b00110,
 
 
 wire[31:0]  or_out,    and_out, rol_out,  ror_out,   shl_out,   shr_out,
+				addi_out,  andi_out,ori_out,
             shra_out,  not_out, neg_out,  HImul_out, LOmul_out, HIdiv_out,
             LOdiv_out, add_out, sub_out,  incPC_out;
 wire add_cout, sub_cout;
@@ -80,15 +81,15 @@ always @(*) begin
             HI <= 32'd0;
         end
         _addi: begin
-            LO <= add_out;
+            LO <= addi_out;
             HI <= 32'd0;
         end
         _andi: begin
-            LO <= and_out;
+            LO <= andi_out;
             HI <= 32'd0;
         end
         _ori: begin
-            LO <= or_out;
+            LO <= ori_out;
             HI <= 32'd0;
         end
          _mul: begin

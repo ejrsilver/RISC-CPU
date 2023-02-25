@@ -4,7 +4,7 @@ module datapath(
 	input ZHighout, ZLowout,
 	input MDRout,
 	input R2out, R3out,
-	input MARin, Zhighin, Zlowin, PCin, MDRin, IRin, Yin,
+	input MARin, Zin, PCin, MDRin, IRin, Yin,
 	input IncPC,
 	input Read, 
    input wire [4:0] opcode,
@@ -18,9 +18,8 @@ module datapath(
 				R3_busin, R4_busin, R5_busin, R6_busin, R7_busin, R8_busin, R9_busin, 
 				R10_busin, R11_busin, R12_busin, R13_busin, R14_busin, R15_busin, MDR_busin;
 
-	
 	wire [31:0] busout;
-	wire clr, cout;
+	wire clr;
 
 	reg [15:0] enableReg;
 	reg [15:0] Rout;
@@ -58,13 +57,12 @@ module datapath(
 	reg_32 r15 (clk, clr, enableReg[15], busout, R15_busin);
 
 	// Other
-	reg_32 HI (clk, clr, HIin, busout, HI_busin);
-	reg_32 LO (clk, clr, LOin, busout, LO_busin);
-	reg_32 Z_HI (clk, clr, Zhighin, C_out_HI, ZHI_busin);
-	reg_32 Z_LO (clk, clr, Zlowin, C_out_LO, ZLO_busin);
 	reg_32 PC (clk, clr, PCin, busout, PC_busin);
 	reg_32 Y (clk, clr, Yin, busout, Y_busin);
-
+	reg_32 Z_HI (clk, clr, Zin, C_out_HI, ZHI_busin);
+	reg_32 Z_LO (clk, clr, Zin, C_out_LO, ZLO_busin);
+	reg_32 HI (clk, clr, HIin, busout, HI_busin);
+	reg_32 LO (clk, clr, LOin, busout, LO_busin);
 
 	// IR will be used for select and encode logic in phase 2
 	reg_32 IR (clk, clr, IRin, busout, IR_busin);
@@ -74,21 +72,15 @@ module datapath(
 	// Space for IO, MAR, RAM, Con FF, and other stuff
 	
 	wire [4:0] encoder_out;
-	
-//		input PCout,
-//	input ZHighout, ZLowout,
-//	input MDRout,
-//	input R2out, R3out,
-//	input MARin, Zin, PCin, MDRin, IRin, Yin,
-//	input IncPC,
-//	input Read, 
-//   input wire [4:0] opcode,
-//	input R1in, R2in, R3in,
-//   input clk,
 
-	encoder_32_5 bus_enc ({enableReg, HIin, LOin, 
-					Zhighin, Zlowin, PCin, 
-					MDRin, 1'b0, cout, 8'd0}, encoder_out);
+	encoder_32_5 bus_enc ({R0_busin, R1_busin, R2_busin, 
+					R3_busin, R4_busin, R5_busin, 
+					R6_busin, R7_busin, R8_busin, 
+					R9_busin, R10_busin, R11_busin, 
+					R12_busin, R13_busin, R14_busin, 
+					R15_busin, HI_busin, LO_busin, 
+					ZHI_busin, ZLO_busin, PC_busin, 
+					MDR_busin, InPort_busin, C_sign_extend, 8'd0}, encoder_out);
 
 	mux_32_1 bus_mux (R0_busin, R1_busin, R2_busin, 
 					R3_busin, R4_busin, R5_busin, 
