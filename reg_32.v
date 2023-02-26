@@ -13,10 +13,10 @@ endmodule
 
 module MDR_reg_32(
   input clk, reset, enable, read,
-  input [31:0]  Mdatain, busout,
+  input [31:0] busout, Mdatain,
   output [31:0] MDRout
 );
   wire [31:0] MDRin;
-  mux_2_1 MDMux (Mdatain, busout, read, MDRin);
+  mux_2_1 MDMux (busout, Mdatain, read, MDRin);
   reg_32 reg_MDR (clk, reset, enable, MDRin, MDRout);
 endmodule

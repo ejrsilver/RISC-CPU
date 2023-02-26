@@ -67,13 +67,13 @@ module datapath(
 	// IR will be used for select and encode logic in phase 2
 	reg_32 IR (clk, clr, IR_enable, busout, IR_busin);
 
-	MDR_reg_32 MDR (clk, clr, MDR_enable, Read, MDatain, busout, MDR_busin);
+	MDR_reg_32 MDR (clk, clr, MDR_enable, Read, busout, MDatain, MDR_busin);
 
 	// Space for IO, MAR, RAM, Con FF, and other stuff
 	
 	wire [4:0] encoder_out;
 
-	encoder_32_5 bus_enc ({8'd0, cout, InPortout, MDRout, PCout, Zlowout, Zhighout, LOout, HIout, R0_15_enable}, encoder_out);
+	encoder_32_5 bus_enc ({8'd0, cout, InPortout, MDRout, PCout, Zlowout, Zhighout, LOout, HIout, R0_15_out}, encoder_out);
 
 	mux_32_1 bus_mux (R0_busin, R1_busin, R2_busin, 
 					R3_busin, R4_busin, R5_busin, 
