@@ -15,7 +15,7 @@ module datapath_tb;
 
     reg [3:0] Present_state = Default;
 
-    datapath DUT(Clock, 1'b0, Mdatain, IncPC, {1'b0, R1in, R2in, R3in, 12'd0}, {2'd0, R2out, R3out, 12'd0}, PCin, Zin, MDRin, Yin, PCout, Zhighout, Zlowout, 1'b0, 1'b0, MDRout, 1'b0, opcode);
+    datapath DUT(Clock, 1'b0, Mdatain, Read, IncPC, {1'b0, R1in, R2in, R3in, 12'd0}, {2'd0, R2out, R3out, 12'd0}, PCin, Zin, MDRin, Yin, PCout, Zhighout, Zlowout, 1'b0, 1'b0, MDRout, 1'b0, opcode);
 
     initial begin
         Clock = 0;
@@ -45,7 +45,7 @@ module datapath_tb;
                 PCout <= 0; Zlowout <= 0; MDRout <= 0;
                 R2out <= 0; R3out <= 0; MARin <= 0; Zin <= 0;
                 PCin <= 0; MDRin <= 0; IRin <= 0; Yin <= 0;
-                IncPC <= 0; Read <= 0; AND <= 0;
+                IncPC <= 0; Read <= 0; opcode <= 5'b00000;
                 R1in <= 0; R2in <= 0; R3in <= 0; Mdatain <= 32'h00000000;
             end
             Reg_load1a: begin
@@ -55,6 +55,7 @@ module datapath_tb;
                 #15 Read <= 0; MDRin <= 0;
             end
             Reg_load1b: begin
+                Mdatain <= 32'h00000013;
                 #10 MDRout <= 1; R2in <= 1;
                 #15 MDRout <= 0; R2in <= 0;
             end

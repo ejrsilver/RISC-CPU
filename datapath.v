@@ -3,11 +3,13 @@ module datapath(
 	input clk, clr,
 
 	input [31:0] MDatain,
+	
+	input Read,
 
 	input IncPC,
 
-	input [15:0] R0_15_enable_in;
-	input [15:0] R0_15_out_in;
+	input [15:0] R0_15_enable_in,
+	input [15:0] R0_15_out_in,
 
 	input PC_enable, Z_enable, MDR_enable, Y_enable,
 
@@ -19,10 +21,10 @@ module datapath(
 	wire [31:0] R0_busin,	R1_busin,	R2_busin,		R3_busin,	R4_busin,	R5_busin,	R6_busin,	R7_busin,
 				R8_busin,	R9_busin,	R10_busin,		R11_busin,	R12_busin,	R13_busin,	R14_busin,	R15_busin,
 				PC_busin,	ZHI_busin,	ZLO_busin,		HI_busin,	LO_busin,	MDR_busin,	Y_busin,	InPort_busin,
-				IR_busin,	C_data,		C_sign_extend,	RAM_out;
+				IR_busin,	C_data,		C_sign_extend,	RAM_out,		C_out_HI,	C_out_LO;
 	
 	wire [31:0] busout;
-	wire clr, cout;
+	wire cout;
 
 	reg [15:0] R0_15_enable;
 	reg [15:0] R0_15_out;
@@ -65,6 +67,7 @@ module datapath(
 
 
 	// IR will be used for select and encode logic in phase 2
+	wire IR_enable;
 	reg_32 IR (clk, clr, IR_enable, busout, IR_busin);
 
 	MDR_reg_32 MDR (clk, clr, MDR_enable, Read, busout, MDatain, MDR_busin);
@@ -73,7 +76,7 @@ module datapath(
 	
 	wire [4:0] encoder_out;
 
-	encoder_32_5 bus_enc ({8'd0, cout, InPortout, MDRout, PCout, Zlowout, Zhighout, LOout, HIout, R0_15_out}, encoder_out);
+	encoder_32_5 bus_enc ({8'd0, cout, InPortout, MDRout, PCout, ZLowout, ZHighout, LOout, HIout, R0_15_out}, encoder_out);
 
 	mux_32_1 bus_mux (R0_busin, R1_busin, R2_busin, 
 					R3_busin, R4_busin, R5_busin, 
