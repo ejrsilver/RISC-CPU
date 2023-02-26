@@ -1,94 +1,79 @@
 `timescale 1ns/10ps
 module datapath(
-	input PCout,
-	input ZHighout, ZLowout,
-	input MDRout,
-	input R2out, R3out,
-	input MARin, Zhighin, Zlowin, PCin, MDRin, IRin, Yin,
+	input clk, clr,
+
+	input [31:0] MDatain,
+
 	input IncPC,
-	input Read, 
-   input wire [4:0] opcode,
-	input R1in, R2in, R3in,
-   input clk,
-	input [31:0] MDatain
+
+	input [15:0] R0_15_enable_in;
+	input [15:0] R0_15_out_in;
+
+	input PC_enable, Z_enable, MDR_enable, Y_enable,
+
+	input PCout, ZHighout, ZLowout, HIout, LOout, MDRout, InPortout,
+
+	input [4:0] opcode
 );
 
-	wire [31:0] RAM_out, C_out_HI, C_out_LO, InPort_busin, IR_busin, PC_busin, Y_busin, ZHI_busin, 
-				ZLO_busin, C_sign_extend, HI_busin, LO_busin, R0_busin, R1_busin, R2_busin, 
-				R3_busin, R4_busin, R5_busin, R6_busin, R7_busin, R8_busin, R9_busin, 
-				R10_busin, R11_busin, R12_busin, R13_busin, R14_busin, R15_busin, MDR_busin;
-
+	wire [31:0] R0_busin,	R1_busin,	R2_busin,		R3_busin,	R4_busin,	R5_busin,	R6_busin,	R7_busin,
+				R8_busin,	R9_busin,	R10_busin,		R11_busin,	R12_busin,	R13_busin,	R14_busin,	R15_busin,
+				PC_busin,	ZHI_busin,	ZLO_busin,		HI_busin,	LO_busin,	MDR_busin,	Y_busin,	InPort_busin,
+				IR_busin,	C_data,		C_sign_extend,	RAM_out;
 	
 	wire [31:0] busout;
 	wire clr, cout;
 
-	reg [15:0] enableReg;
-	reg [15:0] Rout;
+	reg [15:0] R0_15_enable;
+	reg [15:0] R0_15_out;
 
 	initial begin
-		Rout = 16'd0;
-		enableReg = 16'd0;
+		R0_15_out = 16'd0;
+		R0_15_enable = 16'd0;
 	end
 
 	always @(*) begin
-		enableReg[1] <= R1in;
-		enableReg[2] <= R2in;
-		enableReg[3] <= R3in;
-
-		Rout[2] <= R2out;
-		Rout[3] <= R3out;
+		R0_15_enable <= R0_15_enable_in;
+		R0_15_out	 <= R0_15_out_in;
 	end
 
 	// General purpose registers r0-r15
-	reg_32 r0 (clk, clr, enableReg[0], busout, R0_busin); 
-	reg_32 r1 (clk, clr, enableReg[1], busout, R1_busin); 
-	reg_32 r2 (clk, clr, enableReg[2], busout, R2_busin);
-	reg_32 r3 (clk, clr, enableReg[3], busout, R3_busin);
-	reg_32 r4 (clk, clr, enableReg[4], busout, R4_busin);
-	reg_32 r5 (clk, clr, enableReg[5], busout, R5_busin);
-	reg_32 r6 (clk, clr, enableReg[6], busout, R6_busin);
-	reg_32 r7 (clk, clr, enableReg[7], busout, R7_busin);
-	reg_32 r8 (clk, clr, enableReg[8], busout, R8_busin);
-	reg_32 r9 (clk, clr, enableReg[9], busout, R9_busin);
-	reg_32 r10 (clk, clr, enableReg[10], busout, R10_busin);
-	reg_32 r11 (clk, clr, enableReg[11], busout, R11_busin);
-	reg_32 r12 (clk, clr, enableReg[12], busout, R12_busin);
-	reg_32 r13 (clk, clr, enableReg[13], busout, R13_busin);
-	reg_32 r14 (clk, clr, enableReg[14], busout, R14_busin);
-	reg_32 r15 (clk, clr, enableReg[15], busout, R15_busin);
+	reg_32 r0 (clk, clr, R0_15_enable[0], busout, R0_busin);
+	reg_32 r1 (clk, clr, R0_15_enable[1], busout, R1_busin); 
+	reg_32 r2 (clk, clr, R0_15_enable[2], busout, R2_busin);
+	reg_32 r3 (clk, clr, R0_15_enable[3], busout, R3_busin);
+	reg_32 r4 (clk, clr, R0_15_enable[4], busout, R4_busin);
+	reg_32 r5 (clk, clr, R0_15_enable[5], busout, R5_busin);
+	reg_32 r6 (clk, clr, R0_15_enable[6], busout, R6_busin);
+	reg_32 r7 (clk, clr, R0_15_enable[7], busout, R7_busin);
+	reg_32 r8 (clk, clr, R0_15_enable[8], busout, R8_busin);
+	reg_32 r9 (clk, clr, R0_15_enable[9], busout, R9_busin);
+	reg_32 r10 (clk, clr, R0_15_enable[10], busout, R10_busin);
+	reg_32 r11 (clk, clr, R0_15_enable[11], busout, R11_busin);
+	reg_32 r12 (clk, clr, R0_15_enable[12], busout, R12_busin);
+	reg_32 r13 (clk, clr, R0_15_enable[13], busout, R13_busin);
+	reg_32 r14 (clk, clr, R0_15_enable[14], busout, R14_busin);
+	reg_32 r15 (clk, clr, R0_15_enable[15], busout, R15_busin);
 
 	// Other
-	reg_32 HI (clk, clr, HIin, busout, HI_busin);
-	reg_32 LO (clk, clr, LOin, busout, LO_busin);
-	reg_32 Z_HI (clk, clr, Zhighin, C_out_HI, ZHI_busin);
-	reg_32 Z_LO (clk, clr, Zlowin, C_out_LO, ZLO_busin);
-	reg_32 PC (clk, clr, PCin, busout, PC_busin);
-	reg_32 Y (clk, clr, Yin, busout, Y_busin);
+	reg_32 HI (clk, clr, 1'd1, busout, HI_busin);
+	reg_32 LO (clk, clr, 1'd1, busout, LO_busin);
+	reg_32 Z_HI (clk, clr, Z_enable, C_out_HI, ZHI_busin);
+	reg_32 Z_LO (clk, clr, Z_enable, C_out_LO, ZLO_busin);
+	reg_32 PC (clk, clr, PC_enable, busout, PC_busin);
+	reg_32 Y (clk, clr, Y_enable, busout, Y_busin);
 
 
 	// IR will be used for select and encode logic in phase 2
-	reg_32 IR (clk, clr, IRin, busout, IR_busin);
+	reg_32 IR (clk, clr, IR_enable, busout, IR_busin);
 
-	MDR_reg_32 MDR (clk, clr, MDRin, Read, MDatain, busout, MDR_busin);
+	MDR_reg_32 MDR (clk, clr, MDR_enable, Read, MDatain, busout, MDR_busin);
 
 	// Space for IO, MAR, RAM, Con FF, and other stuff
 	
 	wire [4:0] encoder_out;
-	
-//		input PCout,
-//	input ZHighout, ZLowout,
-//	input MDRout,
-//	input R2out, R3out,
-//	input MARin, Zin, PCin, MDRin, IRin, Yin,
-//	input IncPC,
-//	input Read, 
-//   input wire [4:0] opcode,
-//	input R1in, R2in, R3in,
-//   input clk,
 
-	encoder_32_5 bus_enc ({enableReg, HIin, LOin, 
-					Zhighin, Zlowin, PCin, 
-					MDRin, 1'b0, cout, 8'd0}, encoder_out);
+	encoder_32_5 bus_enc ({8'd0, cout, InPortout, MDRout, PCout, Zlowout, Zhighout, LOout, HIout, R0_15_enable}, encoder_out);
 
 	mux_32_1 bus_mux (R0_busin, R1_busin, R2_busin, 
 					R3_busin, R4_busin, R5_busin, 

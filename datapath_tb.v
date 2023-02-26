@@ -1,10 +1,13 @@
 `timescale 1ns/10ps
 module datapath_tb;
-    reg PCout, Zhighout, Zlowout, MDRout, R2out, R3out; reg MARin, Zhighin, Zlowin, PCin, MDRin, IRin, Yin;
+    reg PCout, Zhighout, Zlowout, MDRout, R2out, R3out; 
+    reg MARin, Zin, PCin, MDRin, IRin, Yin;
     reg IncPC, Read, R1in, R2in, R3in;
-    reg [4:0] AND;
+    reg [4:0] opcode;
     reg Clock;
     reg [31:0] Mdatain;
+
+
 
     parameter Default = 4'b0000, Reg_load1a = 4'b0001, Reg_load1b = 4'b0010, Reg_load2a = 4'b0011,
     Reg_load2b = 4'b0100, Reg_load3a = 4'b0101, Reg_load3b = 4'b0110, T0 = 4'b0111,
@@ -12,7 +15,7 @@ module datapath_tb;
 
     reg [3:0] Present_state = Default;
 
-    datapath DUT(PCout, Zhighout, Zlowout, MDRout, R2out, R3out, MARin, Zhighin, Zlowin, PCin, MDRin, IRin, Yin, IncPC, Read, AND, R1in, R2in, R3in, Clock, Mdatain);
+    datapath DUT(Clock, 1'b0, Mdatain, IncPC, {1'b0, R1in, R2in, R3in, 12'd0}, {2'd0, R2out, R3out, 12'd0}, PCin, Zin, MDRin, Yin, PCout, Zhighout, Zlowout, 1'b0, 1'b0, MDRout, 1'b0, opcode);
 
     initial begin
         Clock = 0;
@@ -40,7 +43,7 @@ module datapath_tb;
         case (Present_state)
             Default: begin
                 PCout <= 0; Zlowout <= 0; MDRout <= 0;
-                R2out <= 0; R3out <= 0; MARin <= 0; Zhighin <= 0; Zlowin <= 0;
+                R2out <= 0; R3out <= 0; MARin <= 0; Zin <= 0;
                 PCin <= 0; MDRin <= 0; IRin <= 0; Yin <= 0;
                 IncPC <= 0; Read <= 0; AND <= 0;
                 R1in <= 0; R2in <= 0; R3in <= 0; Mdatain <= 32'h00000000;
@@ -74,7 +77,7 @@ module datapath_tb;
                 #15 MDRout <= 0; R1in <= 0;
             end
             T0: begin
-                PCout <= 1; MARin <= 1; IncPC <= 1; Zhighin <= 1; Zlowin <= 1;
+                PCout <= 1; MARin <= 1; IncPC <= 1; Zin <= 1;
             end
             T1: begin
                 Zlowout <= 1; PCin <= 1; Read <= 1; MDRin <= 1;
@@ -87,7 +90,7 @@ module datapath_tb;
                 R2out <= 1; Yin <= 1;
             end
             T4: begin
-                R3out <= 1; AND <= 5'd3; Zhighin <= 1; Zlowin <= 1;
+                R3out <= 1; opcode <= 5'b00011; Zin <= 1;
             end
             T5: begin
                 Zlowout <= 1; R1in <= 1;
