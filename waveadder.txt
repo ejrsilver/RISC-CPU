@@ -5,10 +5,18 @@ sim:/datapath_tb/Present_state
 add wave -position insertpoint  \
 sim:/datapath_tb/Mdatain
 add wave -position insertpoint  \
-sim:/datapath_tb/DUT/MDR_busin
+sim:/datapath_tb/DUT/R1_busin
 add wave -position insertpoint  \
 sim:/datapath_tb/DUT/R2_busin
 add wave -position insertpoint  \
-sim:/datapath_tb/MDRout
+sim:/datapath_tb/DUT/R3_busin
 add wave -position insertpoint  \
-sim:/datapath_tb/R2in
+sim:/datapath_tb/DUT/R0_15_enable_in
+add wave -position insertpoint  \
+sim:/datapath_tb/DUT/R0_15_out_in
+add wave -position insertpoint  \
+sim:/datapath_tb/DUT/encoder_in
+add wave -position insertpoint  \
+sim:/datapath_tb/DUT/busout
+add wave -position insertpoint  \
+sim:/datapath_tb/DUT/encoder_out

@@ -5,6 +5,7 @@ module datapath_tb;
     reg IncPC, Read, R1in, R2in, R3in;
     reg [4:0] opcode;
     reg Clock;
+    reg flag;
     reg [31:0] Mdatain;
 
 
@@ -19,10 +20,12 @@ module datapath_tb;
 
     initial begin
         Clock = 0;
+	flag = 0;
         forever #10 Clock = ~ Clock;
     end
 
     always @(posedge Clock) begin
+        if (flag == 1) begin
         case (Present_state)
             Default: Present_state = Reg_load1a;
             Reg_load1a: Present_state = Reg_load1b;
@@ -37,12 +40,16 @@ module datapath_tb;
             T3: Present_state = T4;
             T4: Present_state = T5;
         endcase
+        flag = 0;
+    end else begin
+	flag = 1;
+    end
     end
 
     always @(Present_state) begin
         case (Present_state)
             Default: begin
-                PCout <= 0; Zlowout <= 0; MDRout <= 0;
+                PCout <= 0; Zlowout <= 0; Zhighout <= 0; MDRout <= 0;
                 R2out <= 0; R3out <= 0; MARin <= 0; Zin <= 0;
                 PCin <= 0; MDRin <= 0; IRin <= 0; Yin <= 0;
                 IncPC <= 0; Read <= 0; opcode <= 5'b00000;

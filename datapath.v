@@ -25,6 +25,7 @@ module datapath(
 	
 	wire [31:0] busout;
 	wire cout;
+	assign cout = 0;
 
 	reg [15:0] R0_15_enable;
 	reg [15:0] R0_15_out;
@@ -40,22 +41,22 @@ module datapath(
 	end
 
 	// General purpose registers r0-r15
-	reg_32 r0 (clk, clr, R0_15_enable[0], busout, R0_busin);
-	reg_32 r1 (clk, clr, R0_15_enable[1], busout, R1_busin); 
-	reg_32 r2 (clk, clr, R0_15_enable[2], busout, R2_busin);
-	reg_32 r3 (clk, clr, R0_15_enable[3], busout, R3_busin);
-	reg_32 r4 (clk, clr, R0_15_enable[4], busout, R4_busin);
-	reg_32 r5 (clk, clr, R0_15_enable[5], busout, R5_busin);
-	reg_32 r6 (clk, clr, R0_15_enable[6], busout, R6_busin);
-	reg_32 r7 (clk, clr, R0_15_enable[7], busout, R7_busin);
-	reg_32 r8 (clk, clr, R0_15_enable[8], busout, R8_busin);
-	reg_32 r9 (clk, clr, R0_15_enable[9], busout, R9_busin);
-	reg_32 r10 (clk, clr, R0_15_enable[10], busout, R10_busin);
-	reg_32 r11 (clk, clr, R0_15_enable[11], busout, R11_busin);
-	reg_32 r12 (clk, clr, R0_15_enable[12], busout, R12_busin);
-	reg_32 r13 (clk, clr, R0_15_enable[13], busout, R13_busin);
-	reg_32 r14 (clk, clr, R0_15_enable[14], busout, R14_busin);
-	reg_32 r15 (clk, clr, R0_15_enable[15], busout, R15_busin);
+	reg_32 r0 (clk, clr, R0_15_enable[15], busout, R0_busin);
+	reg_32 r1 (clk, clr, R0_15_enable[14], busout, R1_busin); 
+	reg_32 r2 (clk, clr, R0_15_enable[13], busout, R2_busin);
+	reg_32 r3 (clk, clr, R0_15_enable[12], busout, R3_busin);
+	reg_32 r4 (clk, clr, R0_15_enable[11], busout, R4_busin);
+	reg_32 r5 (clk, clr, R0_15_enable[10], busout, R5_busin);
+	reg_32 r6 (clk, clr, R0_15_enable[9], busout, R6_busin);
+	reg_32 r7 (clk, clr, R0_15_enable[8], busout, R7_busin);
+	reg_32 r8 (clk, clr, R0_15_enable[7], busout, R8_busin);
+	reg_32 r9 (clk, clr, R0_15_enable[6], busout, R9_busin);
+	reg_32 r10 (clk, clr, R0_15_enable[5], busout, R10_busin);
+	reg_32 r11 (clk, clr, R0_15_enable[4], busout, R11_busin);
+	reg_32 r12 (clk, clr, R0_15_enable[3], busout, R12_busin);
+	reg_32 r13 (clk, clr, R0_15_enable[2], busout, R13_busin);
+	reg_32 r14 (clk, clr, R0_15_enable[1], busout, R14_busin);
+	reg_32 r15 (clk, clr, R0_15_enable[0], busout, R15_busin);
 
 	// Other
 	reg_32 HI (clk, clr, 1'd1, busout, HI_busin);
@@ -90,6 +91,6 @@ module datapath(
 					MDR_busin, InPort_busin, C_sign_extend, 
 					encoder_out, busout);
 
-	alu alu_(clk, IncPC, busout, busout, opcode, C_out_HI, C_out_LO);
+	alu alu_(clk, IncPC, busout, Y_busin, opcode, C_out_HI, C_out_LO);
 
 endmodule
