@@ -75,8 +75,10 @@ module datapath(
 	// Space for IO, MAR, RAM, Con FF, and other stuff
 	
 	wire [4:0] encoder_out;
+	wire [31:0] encoder_in;
+	assign encoder_in <= {8'd0, cout, InPortout, MDRout, PCout, ZLowout, ZHighout, LOout, HIout, R0_15_out};
 
-	encoder_32_5 bus_enc ({8'd0, cout, InPortout, MDRout, PCout, ZLowout, ZHighout, LOout, HIout, R0_15_out}, encoder_out);
+	encoder_32_5 bus_enc (encoder_in, encoder_out);
 
 	mux_32_1 bus_mux (R0_busin, R1_busin, R2_busin, 
 					R3_busin, R4_busin, R5_busin, 

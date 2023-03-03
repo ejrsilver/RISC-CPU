@@ -55,7 +55,6 @@ module datapath_tb;
                 #15 Read <= 0; MDRin <= 0;
             end
             Reg_load1b: begin
-                Mdatain <= 32'h00000013;
                 #10 MDRout <= 1; R2in <= 1;
                 #15 MDRout <= 0; R2in <= 0;
             end
