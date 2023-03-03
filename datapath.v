@@ -2,7 +2,7 @@
 module datapath(
 	input clk, clr,
 
-	input [31:0] MDatain,
+	input [31:0] Mdatain,
 	
 	input Read,
 
@@ -11,7 +11,7 @@ module datapath(
 	input [15:0] R0_15_enable_in,
 	input [15:0] R0_15_out_in,
 
-	input PC_enable, Z_enable, MDR_enable, Y_enable,
+	input PC_enable, Z_enable, MDR_enable, MAR_enable, Y_enable,
 
 	input PCout, ZHighout, ZLowout, HIout, LOout, MDRout, InPortout,
 
@@ -21,7 +21,7 @@ module datapath(
 	wire [31:0] R0_busin,	R1_busin,	R2_busin,		R3_busin,	R4_busin,	R5_busin,	R6_busin,	R7_busin,
 				R8_busin,	R9_busin,	R10_busin,		R11_busin,	R12_busin,	R13_busin,	R14_busin,	R15_busin,
 				PC_busin,	ZHI_busin,	ZLO_busin,		HI_busin,	LO_busin,	MDR_busin,	Y_busin,	InPort_busin,
-				IR_busin,	C_data,		C_sign_extend,	RAM_out,		C_out_HI,	C_out_LO;
+				IR_busin,	C_data,		C_sign_extend,	RAM_out,	C_out_HI,	C_out_LO,	MAR_data;
 	
 	wire [31:0] busout;
 	wire cout;
@@ -41,22 +41,22 @@ module datapath(
 	end
 
 	// General purpose registers r0-r15
-	reg_32 r0 (clk, clr, R0_15_enable[15], busout, R0_busin);
-	reg_32 r1 (clk, clr, R0_15_enable[14], busout, R1_busin); 
-	reg_32 r2 (clk, clr, R0_15_enable[13], busout, R2_busin);
-	reg_32 r3 (clk, clr, R0_15_enable[12], busout, R3_busin);
-	reg_32 r4 (clk, clr, R0_15_enable[11], busout, R4_busin);
-	reg_32 r5 (clk, clr, R0_15_enable[10], busout, R5_busin);
-	reg_32 r6 (clk, clr, R0_15_enable[9], busout, R6_busin);
-	reg_32 r7 (clk, clr, R0_15_enable[8], busout, R7_busin);
-	reg_32 r8 (clk, clr, R0_15_enable[7], busout, R8_busin);
-	reg_32 r9 (clk, clr, R0_15_enable[6], busout, R9_busin);
-	reg_32 r10 (clk, clr, R0_15_enable[5], busout, R10_busin);
-	reg_32 r11 (clk, clr, R0_15_enable[4], busout, R11_busin);
-	reg_32 r12 (clk, clr, R0_15_enable[3], busout, R12_busin);
-	reg_32 r13 (clk, clr, R0_15_enable[2], busout, R13_busin);
-	reg_32 r14 (clk, clr, R0_15_enable[1], busout, R14_busin);
-	reg_32 r15 (clk, clr, R0_15_enable[0], busout, R15_busin);
+	reg_32 r0 (clk, clr, R0_15_enable[0], busout, R0_busin);
+	reg_32 r1 (clk, clr, R0_15_enable[1], busout, R1_busin); 
+	reg_32 r2 (clk, clr, R0_15_enable[2], busout, R2_busin);
+	reg_32 r3 (clk, clr, R0_15_enable[3], busout, R3_busin);
+	reg_32 r4 (clk, clr, R0_15_enable[4], busout, R4_busin);
+	reg_32 r5 (clk, clr, R0_15_enable[5], busout, R5_busin);
+	reg_32 r6 (clk, clr, R0_15_enable[6], busout, R6_busin);
+	reg_32 r7 (clk, clr, R0_15_enable[7], busout, R7_busin);
+	reg_32 r8 (clk, clr, R0_15_enable[8], busout, R8_busin);
+	reg_32 r9 (clk, clr, R0_15_enable[9], busout, R9_busin);
+	reg_32 r10 (clk, clr, R0_15_enable[10], busout, R10_busin);
+	reg_32 r11 (clk, clr, R0_15_enable[11], busout, R11_busin);
+	reg_32 r12 (clk, clr, R0_15_enable[12], busout, R12_busin);
+	reg_32 r13 (clk, clr, R0_15_enable[13], busout, R13_busin);
+	reg_32 r14 (clk, clr, R0_15_enable[14], busout, R14_busin);
+	reg_32 r15 (clk, clr, R0_15_enable[15], busout, R15_busin);
 
 	// Other
 	reg_32 HI (clk, clr, 1'd1, busout, HI_busin);
@@ -71,9 +71,10 @@ module datapath(
 	wire IR_enable;
 	reg_32 IR (clk, clr, IR_enable, busout, IR_busin);
 
-	MDR_reg_32 MDR (clk, clr, MDR_enable, Read, busout, MDatain, MDR_busin);
+	MDR_reg_32 MDR (clk, clr, MDR_enable, Read, busout, Mdatain, MDR_busin);
+	reg_32 MAR (clk, clr, MAR_enable, Mdatain, MAR_data);
 
-	// Space for IO, MAR, RAM, Con FF, and other stuff
+	// Space for IO, RAM, Con FF, and other stuff
 	
 	wire [4:0] encoder_out;
 	wire [31:0] encoder_in;

@@ -16,7 +16,7 @@ module datapath_tb;
 
     reg [3:0] Present_state = Default;
 
-    datapath DUT(Clock, 1'b0, Mdatain, Read, IncPC, {1'b0, R1in, R2in, R3in, 12'd0}, {2'd0, R2out, R3out, 12'd0}, PCin, Zin, MDRin, Yin, PCout, Zhighout, Zlowout, 1'b0, 1'b0, MDRout, 1'b0, opcode);
+    datapath DUT(Clock, 1'b0, Mdatain, Read, IncPC, {12'd0, R3in, R2in, R1in, 1'b0}, {12'd0, R3out, R2out, 2'd0}, PCin, Zin, MDRin, MARin, Yin, PCout, Zhighout, Zlowout, 1'b0, 1'b0, MDRout, 1'b0, opcode);
 
     initial begin
         Clock = 0;
@@ -87,20 +87,25 @@ module datapath_tb;
                 PCout <= 1; MARin <= 1; IncPC <= 1; Zin <= 1;
             end
             T1: begin
-                Zlowout <= 1; PCin <= 1; Read <= 1; MDRin <= 1;
                 Mdatain <= 32'h28918000; // opcode for “and R1, R2, R3”
+                Read <= 1; MDRin <= 1;
+                #10 Read <= 0; MDRin <= 0;
             end
             T2: begin
                 MDRout <= 1; IRin <= 1;
+                #10 MDRout <= 0; IRin <= 0;
             end
             T3: begin
                 R2out <= 1; Yin <= 1;
+                #10 R2out <= 0; Yin <= 0;
             end
             T4: begin
                 R3out <= 1; opcode <= 5'b00011; Zin <= 1;
+                #10 R3out <= 0; Zin <= 0;
             end
             T5: begin
                 Zlowout <= 1; R1in <= 1;
+                #10 Zlowout <= 0; R1in <= 0;
             end
         endcase
     end
