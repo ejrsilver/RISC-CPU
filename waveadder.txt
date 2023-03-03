@@ -1,0 +1,14 @@
+add wave -position insertpoint  \
+sim:/datapath_tb/Clock
+add wave -position insertpoint  \
+sim:/datapath_tb/Present_state
+add wave -position insertpoint  \
+sim:/datapath_tb/Mdatain
+add wave -position insertpoint  \
+sim:/datapath_tb/DUT/MDR_busin
+add wave -position insertpoint  \
+sim:/datapath_tb/DUT/R2_busin
+add wave -position insertpoint  \
+sim:/datapath_tb/MDRout
+add wave -position insertpoint  \
+sim:/datapath_tb/R2in

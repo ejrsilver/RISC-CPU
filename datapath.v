@@ -76,7 +76,7 @@ module datapath(
 	
 	wire [4:0] encoder_out;
 	wire [31:0] encoder_in;
-	assign encoder_in <= {8'd0, cout, InPortout, MDRout, PCout, ZLowout, ZHighout, LOout, HIout, R0_15_out};
+	assign encoder_in = {8'd0, cout, InPortout, MDRout, PCout, ZLowout, ZHighout, LOout, HIout, R0_15_out};
 
 	encoder_32_5 bus_enc (encoder_in, encoder_out);
 
