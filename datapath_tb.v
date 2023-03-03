@@ -85,6 +85,7 @@ module datapath_tb;
             end
             T0: begin
                 PCout <= 1; MARin <= 1; IncPC <= 1; Zin <= 1;
+                #10 PCout <= 0; MARin <= 0; IncPC <= 0; Zin <= 0;
             end
             T1: begin
                 Mdatain <= 32'h28918000; // opcode for “and R1, R2, R3”
@@ -92,20 +93,20 @@ module datapath_tb;
                 #10 Read <= 0; MDRin <= 0;
             end
             T2: begin
-                MDRout <= 1; IRin <= 1;
-                #10 MDRout <= 0; IRin <= 0;
+                #10 MDRout <= 1; IRin <= 1;
+                #15 MDRout <= 0; IRin <= 0;
             end
             T3: begin
-                R2out <= 1; Yin <= 1;
-                #10 R2out <= 0; Yin <= 0;
+                #10 R2out <= 1; Yin <= 1;
+                #15 R2out <= 0; Yin <= 0;
             end
             T4: begin
-                R3out <= 1; opcode <= 5'b00011; Zin <= 1;
-                #10 R3out <= 0; Zin <= 0;
+                #10 R3out <= 1; opcode <= 5'b00011; Zin <= 1;
+                #15 R3out <= 0; Zin <= 0;
             end
             T5: begin
-                Zlowout <= 1; R1in <= 1;
-                #10 Zlowout <= 0; R1in <= 0;
+                #10 Zlowout <= 1; R1in <= 1;
+                #15 Zlowout <= 0; R1in <= 0;
             end
         endcase
     end

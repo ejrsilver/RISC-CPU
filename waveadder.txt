@@ -20,3 +20,7 @@ add wave -position insertpoint  \
 sim:/datapath_tb/DUT/busout
 add wave -position insertpoint  \
 sim:/datapath_tb/DUT/encoder_out
+add wave -position insertpoint  \
+sim:/datapath_tb/Yin
+add wave -position insertpoint  \
+sim:/datapath_tb/DUT/Y_busin
