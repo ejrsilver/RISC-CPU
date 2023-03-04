@@ -31,7 +31,7 @@ not_32  NOT (B, not_out);
 neg_32  NEG (B, neg_out);
 
 mul_32  MUL (Y, B, HImul_out, LOmul_out);
-divide_32  DIV (Y, B, HIdiv_out, LOdiv_out);
+div_32  DIV (Y, B, HIdiv_out, LOdiv_out);
 
 add_32  ADD (Y, B, 1'b0, add_out, add_cout);
 sub_32  SUB (Y, B, 1'b0, sub_out, sub_cout);

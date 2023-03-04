@@ -11,6 +11,8 @@ module mul_32(
 	wire signed [31:0] N_A_2;
 	wire signed [31:0] A_2;
 
+	add_64_16_term CSA_ADD(spp, temp);
+
 	integer j;
 
 	assign N_A = -A;
@@ -40,11 +42,6 @@ module mul_32(
 			endcase
 
 			spp[j] = pp[j] << (2*j);
-		end
-
-		temp = spp[0];
-		for (j=1; j < 16; j=j+1) begin
-			temp = temp + spp[j];
 		end
 	end
 	assign HI = temp[63:32];

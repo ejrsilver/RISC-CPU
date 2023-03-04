@@ -11,7 +11,7 @@ module datapath(
 	input [15:0] R0_15_enable_in,
 	input [15:0] R0_15_out_in,
 
-	input PC_enable, Z_enable, MDR_enable, MAR_enable, Y_enable,
+	input PC_enable, Z_enable, MDR_enable, MAR_enable, Y_enable, HI_enable, LO_enable,
 
 	input PCout, ZHighout, ZLowout, HIout, LOout, MDRout, InPortout,
 
@@ -59,8 +59,8 @@ module datapath(
 	reg_32 r15 (clk, clr, R0_15_enable[15], busout, R15_busin);
 
 	// Other
-	reg_32 HI (clk, clr, 1'd1, busout, HI_busin);
-	reg_32 LO (clk, clr, 1'd1, busout, LO_busin);
+	reg_32 HI (clk, clr, HI_enable, busout, HI_busin);
+	reg_32 LO (clk, clr, LO_enable, busout, LO_busin);
 	reg_32 Z_HI (clk, clr, Z_enable, C_out_HI, ZHI_busin);
 	reg_32 Z_LO (clk, clr, Z_enable, C_out_LO, ZLO_busin);
 	reg_32 PC (clk, clr, PC_enable, busout, PC_busin);

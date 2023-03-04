@@ -96,7 +96,7 @@ module datapath_tb;
                 #15 R6out <= 0; Yin <= 0;
             end
             T4: begin
-                #10 R7out <= 1; opcode <= 5'b01111; Zin <= 1;
+                #10 R7out <= 1; opcode <= 5'b10000; Zin <= 1;
                 #15 R7out <= 0; Zin <= 0;
             end
             T5: begin

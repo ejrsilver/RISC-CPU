@@ -1,8 +1,8 @@
 `timescale 1ns/10ps
 module datapath_tb;
-    reg PCout, Zhighout, Zlowout, MDRout, R6out, R7out HIout, LOout; 
+    reg PCout, Zhighout, Zlowout, MDRout, R1out, HIout, LOout; 
     reg MARin, Zin, PCin, MDRin, IRin, Yin, HIin, LOin;
-    reg IncPC, Read, R6in, R7in;
+    reg IncPC, Read, R0in, R1in;
     reg [4:0] opcode;
     reg Clock;
     reg flag;
@@ -14,11 +14,11 @@ module datapath_tb;
 
     reg [3:0] Present_state = Default;
 
-    datapath DUT(Clock, 1'b0, Mdatain, Read, IncPC, {8'd0, R7in, R6in, 6'b0}, {8'd0, R7out, R6out, 6'd0}, PCin, Zin, MDRin, MARin, Yin, HIin, LOin, PCout, Zhighout, Zlowout, HIout, LOout, MDRout, 1'b0, opcode);
+    datapath DUT(Clock, 1'b0, Mdatain, Read, IncPC, {14'd0, R1in, R0in}, {14'd0, R1out, 1'b0}, PCin, Zin, MDRin, MARin, Yin, HIin, LOin, PCout, Zhighout, Zlowout, HIout, LOout, MDRout, 1'b0, opcode);
 
     initial begin
         Clock = 0;
-        flag = 0;
+		flag = 0;
         forever #10 Clock = ~ Clock;
     end
 
@@ -40,7 +40,7 @@ module datapath_tb;
         endcase
         flag = 0;
     end else begin
-        flag = 1;
+	flag = 1;
     end
     end
 
@@ -48,10 +48,10 @@ module datapath_tb;
         case (Present_state)
             Default: begin
                 PCout <= 0; Zlowout <= 0; Zhighout <= 0; MDRout <= 0;
-                R6out <= 0; R7out <= 0; MARin <= 0; Zin <= 0;
+                R2out <= 0; R3out <= 0; MARin <= 0; Zin <= 0;
                 PCin <= 0; MDRin <= 0; IRin <= 0; Yin <= 0; HIin <= 0; LOin <= 0;
                 IncPC <= 0; Read <= 0; opcode <= 5'b00000;
-                R1in <= 0; R4in <= 0; R5in <= 0; Mdatain <= 32'h00000000;
+                R0in <= 0; R1in <= 0; Mdatain <= 32'h00000000;
             end
             Reg_load1a: begin
                 Mdatain <= 32'h00000012;
@@ -60,8 +60,8 @@ module datapath_tb;
                 #15 Read <= 0; MDRin <= 0;
             end
             Reg_load1b: begin
-                #10 MDRout <= 1; R6in <= 1;
-                #15 MDRout <= 0; R6in <= 0;
+                #10 MDRout <= 1; R0in <= 1;
+                #15 MDRout <= 0; R0in <= 0;
             end
             Reg_load2a: begin
                 Mdatain <= 32'h00000014;
@@ -69,8 +69,8 @@ module datapath_tb;
                 #15 Read <= 0; MDRin <= 0;
             end
             Reg_load2b: begin
-                #10 MDRout <= 1; R7in <= 1;
-                #15 MDRout <= 0; R7in <= 0;
+                #10 MDRout <= 1; R1in <= 1;
+                #15 MDRout <= 0; R1in <= 0;
             end
             Reg_load3a: begin
 
@@ -92,19 +92,17 @@ module datapath_tb;
                 #15 MDRout <= 0; IRin <= 0;
             end
             T3: begin
-                #10 R6out <= 1; Yin <= 1;
-                #15 R6out <= 0; Yin <= 0;
+
             end
             T4: begin
-                #10 R7out <= 1; opcode <= 5'b01111; Zin <= 1;
-                #15 R7out <= 0; Zin <= 0;
+                #10 R1out <= 1; opcode <= 5'b10010; Zin <= 1;
+                #15 R1out <= 0; Zin <= 0;
             end
             T5: begin
-                #10 Zlowout <= 1; HIin <= 1; LOin <= 1;
-                #15 Zlowout <= 0; HIin <= 0; LOin <= 0;
+                #10 Zlowout <= 1; R0in <= 1;
+                #15 Zlowout <= 0; R0in <= 0;
             end
         endcase
     end
 endmodule
-
 
