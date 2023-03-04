@@ -84,8 +84,9 @@ module and_32_tb;
                 #15 MDRout <= 0; R1in <= 0;
             end
             T0: begin
-                PCout <= 1; MARin <= 1; IncPC <= 1; Zin <= 1;
-                #10 PCout <= 0; MARin <= 0; IncPC <= 0; Zin <= 0;
+				PCout <= 1; MARin <= 1; IncPC <= 1;
+                #10 PCout <= 0;  MARin <= 0; PCin <= 1;
+				#10 PCin <= 0; IncPC <= 0;
             end
             T1: begin
                 Mdatain <= 32'h28918000; // opcode for “and R1, R2, R3”
