@@ -11,7 +11,7 @@ module mul_32(
 	wire signed [31:0] N_A_2;
 	wire signed [31:0] A_2;
 
-	add_64_16_term CSA_ADD(spp, temp);
+	add_64_16_term CSA_ADD(spp[0],spp[1],spp[2],spp[3],spp[4],spp[5],spp[6],spp[7],spp[8], spp[9], spp[10], spp[11], spp[12], spp[13], spp[14], spp[15], temp);
 
 	integer j;
 
