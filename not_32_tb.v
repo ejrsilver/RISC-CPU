@@ -47,8 +47,8 @@ module not_32_tb;
     always @(Present_state) begin
         case (Present_state)
             Default: begin
-                PCout <= 0; Zlowout <= 0; Zhighout <= 0; MDRout <= 0;
-                R2out <= 0; R3out <= 0; MARin <= 0; Zin <= 0;
+                PCout <= 0; Zlowout <= 0; Zhighout <= 0; MDRout <= 0; HIout <= 0; LOout <= 0;
+                R1out <= 0; MARin <= 0; Zin <= 0;
                 PCin <= 0; MDRin <= 0; IRin <= 0; Yin <= 0; HIin <= 0; LOin <= 0;
                 IncPC <= 0; Read <= 0; opcode <= 5'b00000;
                 R0in <= 0; R1in <= 0; Mdatain <= 32'h00000000;
