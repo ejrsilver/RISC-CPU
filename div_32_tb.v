@@ -100,8 +100,8 @@ module div_32_tb;
                 #15 R7out <= 0; Zin <= 0;
             end
             T5: begin
-                #10 Zlowout <= 1; HIin <= 1; LOin <= 1;
-                #15 Zlowout <= 0; HIin <= 0; LOin <= 0;
+                #10 Zlowout <= 1; Zhighout <= 1; HIin <= 1; LOin <= 1;
+                #15 Zlowout <= 0; Zhighout <= 0; HIin <= 0; LOin <= 0;
             end
         endcase
     end
