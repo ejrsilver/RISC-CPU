@@ -4,6 +4,5 @@ module incPC(
     output [31:0] PCout
 );
 wire pc_cout;
-add_32 ADD(PCin, 32'd1, 1'b1, PCout, pc_cout);
-
+add_32 ADD(PCin, 32'd0, IncPC, PCout, pc_cout);
 endmodule

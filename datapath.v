@@ -63,16 +63,19 @@ module datapath(
 	reg_32 LO (clk, clr, LO_enable, busout, LO_busin);
 	reg_32 Z_HI (clk, clr, Z_enable, C_out_HI, ZHI_busin);
 	reg_32 Z_LO (clk, clr, Z_enable, C_out_LO, ZLO_busin);
-	reg_32 PC (clk, clr, PC_enable, busout, PC_busin);
 	reg_32 Y (clk, clr, Y_enable, busout, Y_busin);
-
+	
+	wire [31:0] PC_select;
+	mux_2_1 PC_MUX (busout, C_out_LO, IncPC, PC_select);
+	reg_32 PC (clk, clr, PC_enable, PC_select, PC_busin);
+	
 
 	// IR will be used for select and encode logic in phase 2
 	wire IR_enable;
 	reg_32 IR (clk, clr, IR_enable, busout, IR_busin);
 
 	MDR_reg_32 MDR (clk, clr, MDR_enable, Read, busout, Mdatain, MDR_busin);
-	reg_32 MAR (clk, clr, MAR_enable, Mdatain, MAR_data);
+	reg_32 MAR (clk, clr, MAR_enable, busout, MAR_data);
 
 	// Space for IO, RAM, Con FF, and other stuff
 	

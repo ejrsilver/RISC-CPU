@@ -35,82 +35,86 @@ div_32  DIV (Y, B, HIdiv_out, LOdiv_out);
 
 add_32  ADD (Y, B, 1'b0, add_out, add_cout);
 sub_32  SUB (Y, B, 1'b0, sub_out, sub_cout);
-incPC   INC (Y, IncPC, incPC_out);
+incPC   INC (B, IncPC, incPC_out);
 
 always @(*) begin
-    if (IncPC==1) begin
-        LO <= incPC_out;
-		  HI <= 32'd0;
-    end
-    case (opcode)
-        _add: begin
-            LO <= add_out;
-            HI <= 32'd0;
-        end
-        _sub: begin
-            LO <= sub_out;
-            HI <= 32'd0;
-        end
-        _and: begin
-            LO <= and_out;
-            HI <= 32'd0;
-        end
-        _or: begin
-            LO <= or_out;
-            HI <= 32'd0;
-        end
-        _shr: begin
-            LO <= shr_out;
-            HI <= 32'd0;
-        end
-        _shra: begin
-            LO <= shra_out;
-            HI <= 32'd0;
-        end
-        _shl: begin
-            LO <= shl_out;
-            HI <= 32'd0;
-        end
-        _ror: begin
-            LO <= ror_out;
-            HI <= 32'd0;
-        end
-        _rol: begin
-            LO <= rol_out;
-            HI <= 32'd0;
-        end
-        _addi: begin
-            LO <= add_out;
-            HI <= 32'd0;
-        end
-        _andi: begin
-            LO <= and_out;
-            HI <= 32'd0;
-        end
-        _ori: begin
-            LO <= or_out;
-            HI <= 32'd0;
-        end
-         _mul: begin
-            LO <= LOmul_out;
-            HI <= HImul_out;
-        end
-        _div: begin
-            LO <= LOdiv_out;
-            HI <= HIdiv_out;
-        end
-        _neg: begin
-            LO <= neg_out;
-            HI <= 32'd0;
-        end
-        _not: begin
-            LO <= not_out;
-            HI <= 32'd0;
-        end
-        default: begin
-            LO <= 32'd0;
-            HI <= 32'd0;
-        end
-    endcase
+    case (IncPC)
+        1'b1: begin
+		LO <= incPC_out;
+		HI <= 32'd0;
+		end
+		1'b0: begin
+		case (opcode)
+			_add: begin
+				LO <= add_out;
+				HI <= 32'd0;
+			end
+			_sub: begin
+				LO <= sub_out;
+				HI <= 32'd0;
+			end
+			_and: begin
+				LO <= and_out;
+				HI <= 32'd0;
+			end
+			_or: begin
+				LO <= or_out;
+				HI <= 32'd0;
+			end
+			_shr: begin
+				LO <= shr_out;
+				HI <= 32'd0;
+			end
+			_shra: begin
+				LO <= shra_out;
+				HI <= 32'd0;
+			end
+			_shl: begin
+				LO <= shl_out;
+				HI <= 32'd0;
+			end
+			_ror: begin
+				LO <= ror_out;
+				HI <= 32'd0;
+			end
+			_rol: begin
+				LO <= rol_out;
+				HI <= 32'd0;
+			end
+			_addi: begin
+				LO <= add_out;
+				HI <= 32'd0;
+			end
+			_andi: begin
+				LO <= and_out;
+				HI <= 32'd0;
+			end
+			_ori: begin
+				LO <= or_out;
+				HI <= 32'd0;
+			end
+			 _mul: begin
+				LO <= LOmul_out;
+				HI <= HImul_out;
+			end
+			_div: begin
+				LO <= LOdiv_out;
+				HI <= HIdiv_out;
+			end
+			_neg: begin
+				LO <= neg_out;
+				HI <= 32'd0;
+			end
+			_not: begin
+				LO <= not_out;
+				HI <= 32'd0;
+			end
+			default: begin
+				LO <= 32'd0;
+				HI <= 32'd0;
+			end
+		endcase
+		end
+	endcase
 end
 endmodule
