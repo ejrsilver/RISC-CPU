@@ -1,5 +1,5 @@
 `timescale 1ns/10ps
-module datapath_tb;
+module not_32_tb;
     reg PCout, Zhighout, Zlowout, MDRout, R1out, HIout, LOout; 
     reg MARin, Zin, PCin, MDRin, IRin, Yin, HIin, LOin;
     reg IncPC, Read, R0in, R1in;

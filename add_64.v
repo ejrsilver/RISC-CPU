@@ -9,7 +9,7 @@ module add_64(
 
     wire [63:0] P,G,c;
     assign P = A^B; 
-    assign G = A
+    assign G = A&B;
     assign c[0] = Cin;
 assign c[1] = G[0] | (P[0]&c[0]);
 assign c[2] = G[1] | (P[1]&G[0]) | (P[1]&P[0]&c[0]);

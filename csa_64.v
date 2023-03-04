@@ -1,6 +1,6 @@
-module csa_3_2_reducer(input signed [63:0] A, B, C, output signed [63:0] C, S);
-    assign C = A&B | A&C | B&C;
-    assign S = A^B^C;  
+module csa_3_2_reducer(input signed [63:0] A, B, D, output signed [63:0] C, S);
+    assign C = A&B | A&D | B&D;
+    assign S = A^B^D;
 endmodule
 
 module add_64_16_term(input signed [63:0] in_terms [15:0], output reg signed [63:0] sum);
