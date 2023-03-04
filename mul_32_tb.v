@@ -51,7 +51,7 @@ module mul_32_tb;
                 R6out <= 0; R7out <= 0; MARin <= 0; Zin <= 0;
                 PCin <= 0; MDRin <= 0; IRin <= 0; Yin <= 0; HIin <= 0; LOin <= 0;
                 IncPC <= 0; Read <= 0; opcode <= 5'b00000;
-                R1in <= 0; R4in <= 0; R5in <= 0; Mdatain <= 32'h00000000;
+                R6in <= 0; R7in <= 0; Mdatain <= 32'h00000000;
             end
             Reg_load1a: begin
                 Mdatain <= 32'h00000012;

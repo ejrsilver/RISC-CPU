@@ -5,7 +5,7 @@ module mul_32(
 	reg [2:0] B_for_booth[15:0];
 	reg signed [32:0] pp [15:0];
 	reg signed [63:0] spp [15:0];
-	reg signed [63:0] temp;
+	wire signed [63:0] temp;
 
 	wire signed [31:0] N_A;
 	wire signed [31:0] N_A_2;
