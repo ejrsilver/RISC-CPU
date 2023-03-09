@@ -11,7 +11,7 @@ module datapath(
 	input [15:0] R0_15_enable_in,
 	input [15:0] R0_15_out_in,
 
-	input PC_enable, Z_enable, MDR_enable, MAR_enable, Y_enable, HI_enable, LO_enable,
+	input PC_enable, Z_enable, MDR_enable, MAR_enable, Y_enable, HI_enable, LO_enable, IR_enable,
 
 	input PCout, ZHighout, ZLowout, HIout, LOout, MDRout, InPortout,
 
@@ -71,7 +71,6 @@ module datapath(
 	
 
 	// IR will be used for select and encode logic in phase 2
-	wire IR_enable;
 	reg_32 IR (clk, clr, IR_enable, busout, IR_busin);
 
 	MDR_reg_32 MDR (clk, clr, MDR_enable, Read, busout, Mdatain, MDR_busin);

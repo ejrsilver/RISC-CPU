@@ -16,7 +16,7 @@ module neg_32_tb;
 
     reg [3:0] Present_state = Default;
 
-    datapath DUT(Clock, 1'b0, Mdatain, Read, IncPC, {14'd0, R1in, R0in}, {14'd0, R1out, 1'b0}, PCin, Zin, MDRin, MARin, Yin, HIin, LOin, PCout, Zhighout, Zlowout, HIout, LOout, MDRout, 1'b0, opcode);
+    datapath DUT(Clock, 1'b0, Mdatain, Read, IncPC, {14'd0, R1in, R0in}, {14'd0, R1out, 1'b0}, PCin, Zin, MDRin, MARin, Yin, HIin, LOin, IRin, PCout, Zhighout, Zlowout, HIout, LOout, MDRout, 1'b0, opcode);
 
     initial begin
         Clock = 0;
@@ -87,8 +87,8 @@ module neg_32_tb;
             end
             T1: begin
                 Mdatain <= 32'h28918000; // opcode for “and R1, R2, R3”
-                Read <= 1; MDRin <= 1;
-                #10 Read <= 0; MDRin <= 0;
+                #10 Read <= 1; MDRin <= 1;
+                #15 Read <= 0; MDRin <= 0;
             end
             T2: begin
                 #10 MDRout <= 1; IRin <= 1;
