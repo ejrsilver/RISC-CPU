@@ -1,22 +1,6 @@
-module divide_32(input clk, reset, input [31:0] dividend, divisor, output reg [31:0] quotient,remainder);
+module div_32(input signed [31:0] dividend, divisor, output [31:0] quotient, remainder);
 	reg [31:0] r,q,temp;
 	integer i;
-	
-	always @(posedge clk, negedge reset)
-	begin
-		if(!reset)
-			begin
-			//reset output variables
-			quotient <= 0;
-			remainder <= 0;
-			end	
-		else
-			begin	
-			//if reset flag not raised store
-			quotient <= q;
-			remainder <= r;
-			end
-	end
 	
 	always @(*)
 	begin
@@ -49,6 +33,8 @@ module divide_32(input clk, reset, input [31:0] dividend, divisor, output reg [3
 		if(r[31])
 			r=r+divisor;
 	end
+	assign quotient = q;
+	assign remainder = r;
 endmodule
 	
 	

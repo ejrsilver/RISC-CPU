@@ -55,7 +55,7 @@ module div_32_tb;
                 R6in <= 0; R7in <= 0; Mdatain <= 32'h00000000;
             end
             Reg_load1a: begin
-                Mdatain <= 32'h00000012;
+                Mdatain <= 32'h00000018;
                 Read = 0; MDRin = 0;
                 #10 Read <= 1; MDRin <= 1;
                 #15 Read <= 0; MDRin <= 0;
