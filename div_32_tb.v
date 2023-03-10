@@ -15,7 +15,7 @@ module div_32_tb;
 				T1 = 4’b1000, T2 = 4’b1001, T3 = 4’b1010, T4 = 4’b1011, T5 = 4’b1100;
 	reg [3:0] Present_state = Default;
 
-	div_32 div_instance(clk, reset, divid, divis, quotient, remainder);
+	datapath DUT(Clock, 1'b0, Mdatain, Read, IncPC, {8'd0, R7in, R6in, 6'b0}, {8'd0, R7out, R6out, 6'd0}, PCin, Zin, MDRin, MARin, Yin, HIin, LOin, IRin, PCout, Zhighout, Zlowout, HIout, LOout, MDRout, 1'b0, opcode);
 	
 	initial 
 	begin
