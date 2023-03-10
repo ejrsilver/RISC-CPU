@@ -1,4 +1,4 @@
-module divide_32(input clk, reset, input [31:0] dividend, divisor, output reg [31:0] quotient,remainder);
+module div_32(input clk, reset, input [31:0] dividend, divisor, output reg [31:0] quotient,remainder);
 	reg [31:0] r,q,temp;
 	integer i;
 	
