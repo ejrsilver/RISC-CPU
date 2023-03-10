@@ -53,7 +53,7 @@ always @(Present_state) begin
       R6in <= 0; R7in <= 0; Mdatain <= 32'h00000000;
     end
     Reg_load1a: begin
-      Mdatain <= 32'h00000012;
+      Mdatain <= 32'hFFFFFFFF;
       Read = 0; MDRin = 0;
       #10 Read <= 1; MDRin <= 1;
       #15 Read <= 0; MDRin <= 0;
@@ -63,7 +63,7 @@ always @(Present_state) begin
       #15 MDRout <= 0; R6in <= 0;
     end
     Reg_load2a: begin
-      Mdatain <= 32'h00000014;
+      Mdatain <= 32'hF0000014;
       #10 Read <= 1; MDRin <= 1;
       #15 Read <= 0; MDRin <= 0;
     end

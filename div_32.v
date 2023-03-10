@@ -1,4 +1,4 @@
-module div_32(input signed [31:0] dividend, divisor, output [31:0] quotient, remainder);
+module div_32(input [31:0] dividend, divisor, output [31:0] quotient, remainder);
 	reg [31:0] r,q,temp;
 	integer i;
 	
