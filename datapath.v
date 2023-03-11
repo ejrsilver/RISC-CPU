@@ -13,7 +13,7 @@ module datapath(
 
 	input PC_enable, Z_enable, MDR_enable, MAR_enable, Y_enable, HI_enable, LO_enable, IR_enable,
 
-	input PCout, ZHighout, ZLowout, HIout, LOout, MDRout, InPortout,
+	input PCout, ZHighout, ZLowout, HIout, LOout, MDRout, InPortout, BAout,
 
 	input [4:0] opcode
 );
@@ -41,7 +41,10 @@ module datapath(
 	end
 
 	// General purpose registers r0-r15
-	reg_32 r0 (clk, clr, R0_15_enable[0], busout, R0_busin);
+	wire [31:0] R0_regout;
+	reg_32 r0 (clk, clr, R0_15_enable[0], busout, R0_regout);
+	assign R0_busing = R0_regout & BAout;
+	
 	reg_32 r1 (clk, clr, R0_15_enable[1], busout, R1_busin); 
 	reg_32 r2 (clk, clr, R0_15_enable[2], busout, R2_busin);
 	reg_32 r3 (clk, clr, R0_15_enable[3], busout, R3_busin);
