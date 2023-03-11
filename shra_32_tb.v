@@ -56,7 +56,7 @@ module shra_32_tb;
                 R1in <= 0; R3in <= 0; R5in <= 0; Mdatain <= 32'h00000000;
             end
             Reg_load1a: begin
-                Mdatain <= 32'h00000012;
+                Mdatain <= 32'hF0000012;
                 Read = 0; MDRin = 0;
                 #10 Read <= 1; MDRin <= 1;
                 #15 Read <= 0; MDRin <= 0;
