@@ -5,7 +5,7 @@ module mul_32(
 	reg [2:0] B_for_booth[15:0];
 	reg signed [32:0] pp [15:0];
 	reg signed [63:0] spp [15:0];
-	wire signed [63:0] temp;
+	reg signed [63:0] temp;
 
 	wire signed [31:0] N_A;
 	wire signed [31:0] N_A_2;
@@ -41,8 +41,12 @@ module mul_32(
 
 			spp[j] = pp[j] << (2*j);
 		end
+
+		temp = spp[0];
+		for (j=1; j < 16; j=j+1) begin
+			temp = temp + spp[j];
+		end
 	end
-	add_64_16_term CSA_ADD(spp[0],spp[1],spp[2],spp[3],spp[4],spp[5],spp[6],spp[7],spp[8], spp[9], spp[10], spp[11], spp[12], spp[13], spp[14], spp[15], temp);
 	assign HI = temp[63:32];
 	assign LO = temp[31:0];
 endmodule

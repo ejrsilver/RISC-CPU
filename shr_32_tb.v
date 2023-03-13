@@ -66,7 +66,7 @@ module shr_32_tb;
                 #15 MDRout <= 0; R3in <= 0;
             end
             Reg_load2a: begin
-                Mdatain <= 32'h00000014;
+                Mdatain <= 32'h00000001;
                 #10 Read <= 1; MDRin <= 1;
                 #15 Read <= 0; MDRin <= 0;
             end
