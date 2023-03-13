@@ -1,4 +1,4 @@
-module decoder_4_16(input [3:0] in, output [15:0] out);
+module decoder_4_16(input [3:0] in, output reg [15:0] out);
 always @(*) begin
     case (in)
         4'b0000: out <= 16'h0001;

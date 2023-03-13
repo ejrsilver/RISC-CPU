@@ -19,9 +19,9 @@ module datapath(
 );
 
 	wire [31:0] R0_busin,	R1_busin,	R2_busin,		R3_busin,	R4_busin,	R5_busin,	R6_busin,	R7_busin,
-				R8_busin,	R9_busin,	R10_busin,		R11_busin,	R12_busin,	R13_busin,	R14_busin,	R15_busin,
-				PC_busin,	ZHI_busin,	ZLO_busin,		HI_busin,	LO_busin,	MDR_busin,	Y_busin,	InPort_busin,
-				IR_busin,	C_data,		C_sign_extend,	RAM_out,	C_out_HI,	C_out_LO,	MAR_data;
+				R8_busin,		R9_busin,	R10_busin,		R11_busin,	R12_busin,	R13_busin,	R14_busin,	R15_busin,
+				PC_busin,		ZHI_busin,	ZLO_busin,		HI_busin,	LO_busin,	MDR_busin,	Y_busin,		InPort_busin,
+				IR_busin,		C_data,		C_sign_extend,	RAM_out,		C_out_HI,	C_out_LO,	MAR_data;
 	
 	wire [31:0] busout;
 	wire cout;
@@ -43,7 +43,7 @@ module datapath(
 	// General purpose registers r0-r15
 	wire [31:0] R0_regout;
 	reg_32 r0 (clk, clr, R0_15_enable[0], busout, R0_regout);
-	assign R0_busing = R0_regout & BAout;
+	assign R0_busin = R0_regout & BAout;
 	
 	reg_32 r1 (clk, clr, R0_15_enable[1], busout, R1_busin); 
 	reg_32 r2 (clk, clr, R0_15_enable[2], busout, R2_busin);
