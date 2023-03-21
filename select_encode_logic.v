@@ -12,7 +12,7 @@ assign RC = IR_busin[18:15] & {4{Grc}};
 assign R_dec_in = RA | RB | RC;
 decoder_4_16 DECOD(R_dec_in, R_dec_out);
 
-assign opcode = IR_busin[31:27];
+
 assign C_sign_extend = {{13{IR_busin[18]}}, IR_busin[18:0]};
 assign R0_15_in = {16{Rin}} & R_dec_out;
 assign R0_15_out = {16{Rout | BAout}} & R_dec_out;

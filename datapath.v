@@ -12,6 +12,7 @@ module datapath(
 );
 	wire [31:0] R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, R8_out, R9_out, R10_out, R11_out, R12_out, R13_out, R14_out, R15_out,
 				PC_out, ZHI_out, ZLO_out, HI_out, LO_out, MDR_out, Y_out, InPort_out, IR_out, C_data, C_sign_ex, RAM_out, C_out_HI, C_out_LO, MAR_out, InPort_out, OutPort_out;
+
 	wire [31:0] busout;
 	wire [4:0] encoder_out;
 	wire cout;
