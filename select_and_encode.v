@@ -13,5 +13,6 @@ module select_and_encode(input [31:0] IR, input Gra, input Grb, input Grc, input
   //and gates following decoder
   assign regIn = decoderOut & {16{Rin}};
   assign regOut = decoderOut & ({16{Rout}} | {16{BAout}});
+  //derive C sign extended
   assign C_sign_extended = {{13{IR[18]}},IR[18:0]};
 endmodule
