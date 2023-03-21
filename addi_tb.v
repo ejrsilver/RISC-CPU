@@ -1,6 +1,6 @@
 `timescale 1ns/10ps
 module datapath_tb;
-    reg Clock, Reset;
+    reg Clock, flag, Reset;
     reg PCout, Zhighout, Zlowout, MDRout, HIout, LOout, BAout, InPortout, Cout; 
     reg MARin, IRin, Zin, PCin, MDRin, IRin, Yin, HIin, LOin, InPortin, OutPortin;
     reg Gra, Grb, Grc, CONin;
@@ -12,7 +12,7 @@ module datapath_tb;
     wire [31:0] OutPort_out;
     reg [31:0] InPort_input;
 
-    parameter Default = 4'b0000, T0 = 4'b0111, T1 = 4'b1000, T2 = 4'b1001, T3 = 4'b1010, T4 = 4'b1011, T5 = 4'b1100;
+    parameter Default = 4'b0000, Reg_load1a = 4'b0001, Reg_load1b = 4'b0010, Reg_load2a = 4'b0011, Reg_load2b = 4'b0100, Reg_load3a = 4'b0101, Reg_load3b = 4'b0110, T0 = 4'b0111, T1 = 4'b1000, T2 = 4'b1001, T3 = 4'b1010, T4 = 4'b1011, T5 = 4'b1100;
     reg [3:0] Present_state = Default;
 
     datapath DUT(Clock, Reset, Read, Write, IncPC, R0_15_enable, R0_15_out, PCin, Zin, MDRin, MARin, Yin, HIin, LOin, IRin, OutPortin, PCout, Zhighout, Zlowout, HIout, LOout, MDRout, InPortout, Cout, BAout, CONin, Gra, Grb, Grc, Rin, Rout, InPort_input, Mdatain);
@@ -20,20 +20,28 @@ module datapath_tb;
     initial begin
         Clock = 0;
         Reset = 0;
+        flag = 0;
+        forever #10 Clock = ~ Clock;
     end
 
-    always
-        #10 Clock <= ~Clock;
-
     always @(posedge Clock) begin
+        if (flag == 1) begin
         case (Present_state)
-            Default: #40 Present_state = T0;
-            T0: #40 Present_state = T1;
-            T1: #40 Present_state = T2;
-            T2: #20 Present_state = T3;
-            T3: #40 Present_state = T4;
-            T4: #40 Present_state = T5;
+            Default: Present_state = Reg_load1a;
+            Reg_load1a: Present_state = Reg_load1b;
+            Reg_load1b: Present_state = Reg_load2a;
+            Reg_load2a: Present_state = Reg_load2b;
+            Reg_load2b: Present_state = T0;
+            T0: Present_state = T1;
+            T1: Present_state = T2;
+            T2: Present_state = T3;
+            T3: Present_state = T4;
+            T4: Present_state = T5;
         endcase
+        flag = 0;
+    end else begin
+	flag = 1;
+    end
     end
 
     always @(Present_state) begin
@@ -47,31 +55,50 @@ module datapath_tb;
                 InPort_input <= 32'd0; Mdatain <= 32'd0;
                 R0_15_enable <= 16'd0; R0_15_out <= 16'd0;
             end
+            Reg_load1a: begin
+                Mdatain <= 32'h00000012;
+                Read = 0; MDRin = 0;
+                #10 Read <= 1; MDRin <= 1;
+                #15 Read <= 0; MDRin <= 0;
+            end
+            Reg_load1b: begin
+                #10 MDRout <= 1; R0_15_enable <= 16'h0002;
+                #15 MDRout <= 0; R0_15_enable <= 16'h0000;
+            end
+            Reg_load2a: begin
+                Mdatain <= 32'h00000014;
+                #10 Read <= 1; MDRin <= 1;
+                #15 Read <= 0; MDRin <= 0;
+            end
+            Reg_load2b: begin
+                #10 MDRout <= 1; R0_15_enable <= 16'h0004;
+                #15 MDRout <= 0; R0_15_enable <= 16'h0000;
+            end
             T0: begin
-				PCout <= 1; MARin <= 1;
+				PCout <= 1; MARin <= 1; IncPC <= 1;
+                #10 PCout <= 0;  MARin <= 0; PCin <= 1;
+				#10 PCin <= 0; IncPC <= 0;
             end
             T1: begin
-				PCout <= 0; MARin <= 0;
-                Read <= 1; MDRin <= 1; Zlowout <= 1;
+                Mdatain <= 32'h611FFFFD; // opcode for “addi r2, r3, -3”
+                #10 Read <= 1; MDRin <= 1; Zlowout <= 1;
+                #15 Read <= 0; MDRin <= 0; Zlowout <= 0;
             end
             T2: begin
-                Read <= 0; MDRin <= 0; Zlowout <= 0;
-                MDRout <= 1; IRin <= 1; PCin <= 1; IncPC <= 1;
+                #10 MDRout <= 1; IRin <= 1;
+                #15 MDRout <= 0; IRin <= 0;
             end
             T3: begin
-                MDRout <= 0; IRin <= 0; PCin <= 0; IncPC <= 0;
-                Grb <= 1; Rout <= 1; Yin <= 1;
-
-                #15 R2out <= 0; Yin <= 0;
+                #10 Grb <= 1; Rout <= 1; Yin <= 1;
+                #15 Grb <= 0; Rout <= 0; Yin <= 0;
             end
             T4: begin
-                Grb <= 0; Rout <= 0; Yin <= 0;
-                Cout <= 1; Zin <= 1;
+                #10 Cout <= 1; Zin <= 1;
+                #15 Cout <= 0; Zin <= 0;
             end
             T5: begin
-                Cout <= 0; Zin <= 0;
-                Zlowout <= 1; Gra <= 1; Rin <= 1;
-                #40 Zlowout <= 0; Gra <= 0; Rin <= 0; Rout <= 1;
+                #10 Zlowout <= 1; Gra <= 1; Rin <= 1;
+                #15 Zlowout <= 0; Gra <= 0; Rin <= 0; Rout <= 1;
             end
         endcase
     end
