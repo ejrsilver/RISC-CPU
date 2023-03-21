@@ -59,7 +59,7 @@ module addi_tb;
 				#10 PCin <= 0; IncPC <= 0;
             end
             T1: begin
-                Mdatain <= 32'h611FFFFD; // opcode for “addi r2, r3, -3”
+                Mdatain <= 32'00800075; // opcode for “addi r2, r3, -3”
                 #10 Read <= 1; MDRin <= 1; Zlowout <= 1;
                 #15 Read <= 0; MDRin <= 0; Zlowout <= 0;
                 //Case 1: ld R1, $75 == 00800075
