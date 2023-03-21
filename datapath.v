@@ -1,26 +1,25 @@
 `timescale 1ns/10ps
 module datapath(
 	input clk, clr,
-	input [31:0] Mdatain,
-	input Read,
+	input Read, Write,
 	input IncPC,
-	input [15:0] R0_15_in_enable_in,
-	input [15:0] R0_15_out_enable_in,
+	input [15:0] R0_15_in_enable_in, R0_15_out_enable_in,
 	input PC_enable, Z_enable, MDR_enable, MAR_enable, Y_enable, HI_enable, LO_enable, IR_enable, OutPort_enable,
-	input PCout, ZHighout, ZLowout, HIout, LOout, MDRout, InPortout, OutPortout, BAout,
-	input [4:0] opcode
+	input PCout, ZHighout, ZLowout, HIout, LOout, MDRout, InPortout, Cout, BAout,
+	input CONin, Gra, Grb, Grc, Rin, Rout;
+	input [31:0] InPort_input,
+	input [31:0] Mdatain
 );
 	wire [31:0] R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, R8_out, R9_out, R10_out, R11_out, R12_out, R13_out, R14_out, R15_out,
-				PC_out, ZHI_out, ZLO_out, HI_out, LO_out, MDR_out, Y_out, InPort_out, IR_out, C_data, C_sign_ex, RAM_out, C_out_HI, C_out_LO, MAR_out, InPort_out, OutPort_out;
+				PC_out, ZHI_out, ZLO_out, HI_out, LO_out, MDR_out, Y_out, InPort_out, IR_out, C_data, C_sign_extend, RAM_out, C_out_HI, C_out_LO, MAR_out, InPort_out, OutPort_out;
 
 	wire [31:0] busout;
 	wire [4:0] encoder_out;
-	wire cout;
-	
-	reg [15:0] R0_15_in_enable;
-	reg [15:0] R0_15_out_enable;
+	wire [4:0] opcode;
+	wire branch_flag;
 
-	assign cout = 0;
+	wire [15:0] R0_15_in_enable_IR, R0_15_out_enable_IR,
+	reg [15:0] R0_15_in_enable, R0_15_out_enable;
 
 	initial begin
 		R0_15_out_enable = 16'd0;
@@ -28,13 +27,15 @@ module datapath(
 	end
 
 	always @(*) begin
-		R0_15_in_enable <= R0_15_in_enable_in;
-		R0_15_out_enable <= R0_15_out_enable_in;
+		if (R0_15_in_enable_IR) R0_15_in_enable <= R0_15_in_enable_IR;
+		else R0_15_in_enable <= R0_15_in_enable_in;
+		if (R0_15_out_enable_IR) R0_15_out_enable <= R0_15_out_enable_IR;
+		else R0_15_out_enable <= R0_15_out_enable_in;
 	end
 
 	// General purpose registers r0-r15
 	wire [31:0] R0_regout;
-	assign R0_out = R0_regout & BAout;
+	assign R0_out = R0_regout & {32{BAout}};
 	reg_32 r0 (clk, clr, R0_15_in_enable[0], busout, R0_regout);	
 	reg_32 r1 (clk, clr, R0_15_in_enable[1], busout, R1_out); 
 	reg_32 r2 (clk, clr, R0_15_in_enable[2], busout, R2_out);
@@ -62,22 +63,27 @@ module datapath(
 	reg_32 inport(clk, clr, 1'b1, busout, InPort_input, InPort_out);
 	reg_32 outport(clk, clr, OutPort_enable, busout, OutPort_out);
 	
-	// PC can bypass the Z register with a multiplexer, speeding up the instruction process.
+	// PC
 	wire [31:0] PC_select;
 	mux_2_1 PC_MUX (busout, C_out_LO, IncPC, PC_select);
 	reg_32 PC (clk, clr, PC_enable, PC_select, PC_out);
 
-	// Initialize the MDR unit, which has a mux built-in
+	// Select and Encode Logic
+	reg_32 IR(clk, clr, IR_enable, busout, IR_out);
+	select_encode_logic SELogic(IR_out, Gra, Grb, Grc, Rin, Rout, BAout, opcode, C_sign_extend, R0_15_in_enable_IR, R0_15_out_enable_IR);
+
+	// CON FF
+	conff CFF(IR_out[20:19], busout, CONin, branch_flag);
+
+	// Memory Subsystem
 	MDR_reg_32 MDR (clk, clr, MDR_enable, Read, busout, Mdatain, MDR_out);
-
 	reg_32 MAR (clk, clr, MAR_enable, busout, MAR_out);
-
 	RAM ram_mod(clk, Read, Write, MDR_out, MAR_out[8:0], RAM_out);
 	
-	encoder_32_5 bus_enc ({8'd0, cout, InPortout, MDRout, PCout, ZLowout, ZHighout, LOout, HIout, R0_15_out_enable}, encoder_out);
+	// BUS
+	encoder_32_5 bus_enc ({8'd0, Cout, InPortout, MDRout, PCout, ZLowout, ZHighout, LOout, HIout, R0_15_out_enable}, encoder_out);
+	mux_32_1 bus_mux (R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, R8_out, R9_out, R10_out, R11_out, R12_out, R13_out, R14_out, R15_out, HI_out, LO_out, ZHI_out, ZLO_out, PC_out, MDR_out, InPort_out, C_sign_extend, encoder_out, busout);
 
-	mux_32_1 bus_mux (R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, R8_out, R9_out, R10_out, R11_out, R12_out, R13_out, R14_out, R15_out, HI_out, LO_out, ZHI_out, ZLO_out, PC_out, MDR_out, InPort_out, C_sign_ex, encoder_out, busout);
-
-	alu alu_(clk, IncPC, busout, Y_out, opcode, C_out_HI, C_out_LO);
-
+	// ALU
+	alu alu_(clk, IncPC, branch_flag, busout, Y_out, opcode, C_out_HI, C_out_LO);
 endmodule
