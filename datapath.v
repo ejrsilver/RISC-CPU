@@ -6,19 +6,19 @@ module datapath(
 	input [15:0] R0_15_in_enable_in, R0_15_out_enable_in,
 	input PC_enable, Z_enable, MDR_enable, MAR_enable, Y_enable, HI_enable, LO_enable, IR_enable, OutPort_enable,
 	input PCout, ZHighout, ZLowout, HIout, LOout, MDRout, InPortout, Cout, BAout,
-	input CONin, Gra, Grb, Grc, Rin, Rout;
+	input CONin, Gra, Grb, Grc, Rin, Rout,
 	input [31:0] InPort_input,
 	input [31:0] Mdatain
 );
 	wire [31:0] R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, R8_out, R9_out, R10_out, R11_out, R12_out, R13_out, R14_out, R15_out,
-				PC_out, ZHI_out, ZLO_out, HI_out, LO_out, MDR_out, Y_out, InPort_out, IR_out, C_data, C_sign_extend, RAM_out, C_out_HI, C_out_LO, MAR_out, InPort_out, OutPort_out;
+				PC_out, ZHI_out, ZLO_out, HI_out, LO_out, MDR_out, Y_out, IR_out, C_data, C_sign_extend, RAM_out, C_out_HI, C_out_LO, MAR_out, InPort_out, OutPort_out;
 
 	wire [31:0] busout;
 	wire [4:0] encoder_out;
 	wire [4:0] opcode;
 	wire branch_flag;
 
-	wire [15:0] R0_15_in_enable_IR, R0_15_out_enable_IR,
+	wire [15:0] R0_15_in_enable_IR, R0_15_out_enable_IR;
 	reg [15:0] R0_15_in_enable, R0_15_out_enable;
 
 	initial begin
@@ -60,7 +60,7 @@ module datapath(
 	reg_32 Z_LO (clk, clr, Z_enable, C_out_LO, ZLO_out);
 	reg_32 Y (clk, clr, Y_enable, busout, Y_out);
 
-	reg_32 inport(clk, clr, 1'b1, busout, InPort_input, InPort_out);
+	reg_32 inport(clk, clr, 1'b1, InPort_input, InPort_out);
 	reg_32 outport(clk, clr, OutPort_enable, busout, OutPort_out);
 	
 	// PC
