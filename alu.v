@@ -1,7 +1,7 @@
 `timescale 1ns/10ps
 
 module alu(
-    input clk, IncPC, br_flag,
+    input IncPC, br_flag,
     input [31:0] B, Y,
     input [4:0] opcode,
     output reg [31:0] HI, LO

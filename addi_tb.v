@@ -1,28 +1,32 @@
 `timescale 1ns/10ps
 module addi_tb;
-    reg Clock, flag, Reset;
-    reg PCout, Zhighout, Zlowout, MDRout, HIout, LOout, BAout, InPortout, Cout; 
-    reg MARin, Zin, PCin, MDRin, IRin, Yin, HIin, LOin, InPortin, OutPortin;
+    reg PCout, Zhighout, Zlowout, MDRout, HIout, LOout, BAout, InPortout, Cout;
+    reg MARin, Zin, PCin, MDRin, IRin, Yin, HIin, LOin, OutPortin;
     reg Gra, Grb, Grc, CONin;
     reg IncPC, Read, Write, Rin, Rout;
-    reg [15:0] R0_15_enable, R0_15_out;
     reg [4:0] opcode;
+    reg Clock;
+	 reg Reset;
+    reg flag;
     reg [31:0] Mdatain;
-
+	 reg [15:0] R0_15_enable, R0_15_out;
     wire [31:0] OutPort_out;
     reg [31:0] InPort_input;
-
+	 
     parameter Default = 4'b0000, Reg_load1a = 4'b0001, Reg_load1b = 4'b0010, Reg_load2a = 4'b0011, Reg_load2b = 4'b0100, Reg_load3a = 4'b0101, Reg_load3b = 4'b0110, T0 = 4'b0111, T1 = 4'b1000, T2 = 4'b1001, T3 = 4'b1010, T4 = 4'b1011, T5 = 4'b1100;
-    reg [3:0] Present_state = Default;
 
-    datapath DUT(Clock, Reset, Read, Write, IncPC, R0_15_enable, R0_15_out, PCin, Zin, MDRin, MARin, Yin, HIin, LOin, IRin, OutPortin, PCout, Zhighout, Zlowout, HIout, LOout, MDRout, InPortout, Cout, BAout, CONin, Gra, Grb, Grc, Rin, Rout, InPort_input, Mdatain);
+    reg [3:0] Present_state = Default;
 
     initial begin
         Clock = 0;
-        Reset = 0;
-        flag = 0;
-        forever #10 Clock = ~ Clock;
+		  Reset = 0;
+		  flag = 0;
     end
+	 
+	 always
+		Clock = ~ Clock;
+	 
+	 datapath DUT(Clock, Reset, Read, Write, IncPC, R0_15_enable, R0_15_out, PCin, Zin, MDRin, MARin, Yin, HIin, LOin, IRin, OutPortin, PCout, Zhighout, Zlowout, HIout, LOout, MDRout, InPortout, Cout, BAout, CONin, Gra, Grb, Grc, Rin, Rout, InPort_input, Mdatain);
 
     always @(posedge Clock) begin
         if (flag == 1) begin
@@ -31,7 +35,9 @@ module addi_tb;
             Reg_load1a: Present_state = Reg_load1b;
             Reg_load1b: Present_state = Reg_load2a;
             Reg_load2a: Present_state = Reg_load2b;
-            Reg_load2b: Present_state = T0;
+            Reg_load2b: Present_state = Reg_load3a;
+            Reg_load3a: Present_state = Reg_load3b;
+            Reg_load3b: Present_state = T0;
             T0: Present_state = T1;
             T1: Present_state = T2;
             T2: Present_state = T3;
@@ -45,11 +51,10 @@ module addi_tb;
     end
 
     always @(Present_state) begin
-        #10
         case (Present_state)
             Default: begin
                 PCout <= 0; Zlowout <= 0; Zhighout <= 0; MDRout <= 0; InPortout <= 0; HIout <= 0; LOout <= 0; BAout <= 0;
-                PCin <= 0; Zin <= 0; MDRin <= 0; MARin <= 0; InPortin <= 0; OutPortin <= 0; HIin <= 0; LOin <= 0; IRin <= 0; Yin <= 0;
+                PCin <= 0; Zin <= 0; MDRin <= 0; MARin <= 0; OutPortin <= 0; HIin <= 0; LOin <= 0; IRin <= 0; Yin <= 0;
                 Gra <= 0; Grb <= 0; Grc <= 0; CONin <= 0; Rin <= 0; Rout <= 0;
                 IncPC <= 0; Read <= 0; Write <= 0;
                 InPort_input <= 32'd0; Mdatain <= 32'd0;
@@ -98,8 +103,9 @@ module addi_tb;
             end
             T5: begin
                 #10 Zlowout <= 1; Gra <= 1; Rin <= 1;
-                #15 Zlowout <= 0; Gra <= 0; Rin <= 0; Rout <= 1;
+                #15 Zlowout <= 0; Gra <= 0; Rin <= 0;
             end
         endcase
     end
 endmodule
+
