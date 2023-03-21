@@ -1,8 +1,8 @@
 `timescale 1ns/10ps
-module datapath_tb;
+module addi_tb;
     reg Clock, Reset;
     reg PCout, Zhighout, Zlowout, MDRout, HIout, LOout, BAout, InPortout, Cout; 
-    reg MARin, IRin, Zin, PCin, MDRin, IRin, Yin, HIin, LOin, InPortin, OutPortin;
+    reg MARin, Zin, PCin, MDRin, IRin, Yin, HIin, LOin, InPortin, OutPortin;
     reg Gra, Grb, Grc, CONin;
     reg IncPC, Read, Write, Rin, Rout;
     reg [15:0] R0_15_enable, R0_15_out;
@@ -61,8 +61,6 @@ module datapath_tb;
             T3: begin
                 MDRout <= 0; IRin <= 0; PCin <= 0; IncPC <= 0;
                 Grb <= 1; Rout <= 1; Yin <= 1;
-
-                #15 R2out <= 0; Yin <= 0;
             end
             T4: begin
                 Grb <= 0; Rout <= 0; Yin <= 0;
