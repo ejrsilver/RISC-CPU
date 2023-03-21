@@ -73,16 +73,19 @@ module addi_tb;
                 #15 MDRout <= 0; IRin <= 0;
             end
             T3: begin
-                #10 Grb <= 1; Rout <= 1; Yin <= 1;
-                #15 Grb <= 0; Rout <= 0; Yin <= 0;
+                
             end
             T4: begin
-                #10 Cout <= 1; Zin <= 1;
-                #15 Cout <= 0; Zin <= 0;
+              
             end
             T5: begin
-                #10 Zlowout <= 1; Gra <= 1; Rin <= 1;
-                #15 Zlowout <= 0; Gra <= 0; Rin <= 0; Rout <= 1;
+               
+            end
+            T6: begin
+
+            end
+            T7: begin
+
             end
         endcase
     end
