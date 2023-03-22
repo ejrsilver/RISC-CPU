@@ -9,7 +9,8 @@ module RAM (
 reg [31:0] RAM1 [0:511];
 
 initial begin
-    RAM1[0] = 32'h611FFFFD;
+    RAM1[0]   = 32'h08800075;
+	 RAM1[117]  = 32'h00000425;
 end
 
 always @(posedge clk) begin
