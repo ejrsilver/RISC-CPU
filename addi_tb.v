@@ -6,10 +6,9 @@ module addi_tb;
     reg IncPC, Read, Write, Rin, Rout;
     reg [4:0] opcode;
     reg Clock;
-	 reg Reset;
+	reg Reset;
     reg flag;
-    reg [31:0] Mdatain;
-	 reg [15:0] R0_15_enable, R0_15_out;
+	reg [15:0] R0_15_enable, R0_15_out;
     wire [31:0] OutPort_out;
     reg [31:0] InPort_input;
 	 
@@ -26,7 +25,7 @@ module addi_tb;
 	 always
 		Clock = ~ Clock;
 	 
-	 datapath DUT(Clock, Reset, Read, Write, IncPC, R0_15_enable, R0_15_out, PCin, Zin, MDRin, MARin, Yin, HIin, LOin, IRin, OutPortin, PCout, Zhighout, Zlowout, HIout, LOout, MDRout, InPortout, Cout, BAout, CONin, Gra, Grb, Grc, Rin, Rout, InPort_input, Mdatain);
+	 datapath DUT(Clock, Reset, Read, Write, IncPC, R0_15_enable, R0_15_out, PCin, Zin, MDRin, MARin, Yin, HIin, LOin, IRin, OutPortin, PCout, Zhighout, Zlowout, HIout, LOout, MDRout, InPortout, Cout, BAout, CONin, Gra, Grb, Grc, Rin, Rout, InPort_input);
 
     always @(posedge Clock) begin
         if (flag == 1) begin
