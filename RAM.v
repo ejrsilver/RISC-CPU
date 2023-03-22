@@ -8,6 +8,10 @@ module RAM (
 );
 reg [31:0] RAM1 [0:511];
 
+initial begin
+    RAM1[0] = 32'h611FFFFD;
+end
+
 always @(posedge clk) begin
     if(Write == 1) begin
         RAM1[Addr_in] <= Data_in;

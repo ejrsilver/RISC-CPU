@@ -9,7 +9,6 @@ module datapath(
 	input PCout, ZHighout, ZLowout, HIout, LOout, MDRout, InPortout, Cout, BAout,
 	input CONin, Gra, Grb, Grc, Rin, Rout,
 	input [31:0] InPort_input,
-	input [31:0] Mdatain
 );
 	wire [31:0] R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, R8_out, R9_out, R10_out, R11_out, R12_out, R13_out, R14_out, R15_out,
 				PC_out, ZHI_out, ZLO_out, HI_out, LO_out, MDR_out, Y_out, IR_out, C_data, C_sign_extend, RAM_out, C_out_HI, C_out_LO, MAR_out, InPort_out, OutPort_out;
@@ -77,7 +76,7 @@ module datapath(
 	conff CFF(IR_out[20:19], busout, CONin, branch_flag);
 
 	// Memory Subsystem
-	MDR_reg_32 MDR (clk, clr, MDR_enable, Read, busout, Mdatain, MDR_out);
+	MDR_reg_32 MDR (clk, clr, MDR_enable, Read, busout, RAM_out, MDR_out);
 	reg_32 MAR (clk, clr, MAR_enable, busout, MAR_out);
 	RAM ram_mod(clk, Read, Write, MDR_out, MAR_out[8:0], RAM_out);
 	
