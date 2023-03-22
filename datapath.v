@@ -1,4 +1,5 @@
 `timescale 1ns/10ps
+
 module datapath(
 	input clk, clr,
 	input Read, Write,
@@ -85,5 +86,5 @@ module datapath(
 	mux_32_1 bus_mux (R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, R8_out, R9_out, R10_out, R11_out, R12_out, R13_out, R14_out, R15_out, HI_out, LO_out, ZHI_out, ZLO_out, PC_out, MDR_out, InPort_out, C_sign_extend, encoder_out, busout);
 
 	// ALU
-	alu alu_(clk, IncPC, branch_flag, busout, Y_out, opcode, C_out_HI, C_out_LO);
+	alu alu_(IncPC, branch_flag, busout, Y_out, opcode, C_out_HI, C_out_LO);
 endmodule
