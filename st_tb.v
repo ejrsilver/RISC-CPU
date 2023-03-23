@@ -1,5 +1,5 @@
 `timescale 1ns/10ps
-module ldi_tb;
+module st_tb;
     reg Clock, flag, Reset;
     reg PCout, Zhighout, Zlowout, MDRout, HIout, LOout, BAout, InPortout, Cout; 
     reg MARin, Zin, PCin, MDRin, IRin, Yin, HIin, LOin, InPortin, OutPortin;
@@ -31,6 +31,9 @@ module ldi_tb;
             T2: Present_state = T3;
             T3: Present_state = T4;
             T4: Present_state = T5;
+            T5: Present_state = T6;
+            T6: Present_state = T7;
+            T7: Present_state = T8;
         endcase
         flag = 0;
     end else begin
@@ -48,13 +51,13 @@ module ldi_tb;
                 InPort_input <= 32'd0;
             end
             T0: begin
-					 PCout <= 1; MARin <= 1; IncPC <= 1;
+					 PCout <= 1; MARin <= 1; IncPC <= 1; Zin <= 1;
                 #10 PCout <= 0;  MARin <= 0; PCin <= 1;
-					 #10 PCin <= 0; IncPC <= 0;
+					 #10 PCin <= 0; IncPC <= 0; Zin <=0;
             end
             T1: begin
-                #10 Read <= 1; MDRin <= 1;
-                #15 Read <= 0; MDRin <= 0;
+                #10 Read <= 1; MDRin <= 1; PCin <= 1; Zlowout <= 1;
+                #15 Read <= 0; MDRin <= 0; PCin <= 0; Zlowout <= 0;
             end
             T2: begin
                 #10 MDRout <= 1; IRin <= 1;
@@ -69,9 +72,19 @@ module ldi_tb;
                 #15 Cout <= 0; Zin <= 0;
             end
             T5: begin
-                #10 Zlowout <= 1; Gra <= 1; Rin <= 1;
-                #15 Zlowout <= 0; Gra <= 0; Rin <= 0;
+                #10 Zlowout <= 1; MARin <= 1;
+                #15 Zlowout <= 0; MARin <= 0;
             end
+            T6: begin
+				#10 Gra <= 1; BAout <= 1; MDRin <= 1;
+				#15 BAout <= 0; Gra <= 0; MDRin <= 0;
+			end
+			T7: begin
+				#10 Write <= 1;
+			end
+			T8: begin
+				#10 Write <= 0; Read <= 1;
+			end
         endcase
     end
 endmodule
