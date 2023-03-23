@@ -227,12 +227,11 @@ always @(Present_state) begin
 			#10 Zlowout <= 0; MARin <= 0;
 		end
 		ST_T6: begin
-			#5 Read <= 1; MDRin <= 1; Gra <= 1; Rout <= 1;
-			#10 Read <= 0; MDRin <= 0; Gra <= 0; Rout <= 0;
+			#5 MDRin <= 1; Gra <= 1; Rout <= 1;
+			#10 MDRin <= 0; Gra <= 0; Rout <= 0; MDRout <= 1; Write <= 1;
 		end
 		ST_T7: begin
-			#5 MDRout <= 1; Write <= 1;
-			#10 MDRout <= 0; Write <= 0;
+			#5 MDRout <= 0; Write <= 0;
 		end
 /* ----------------- */
 

@@ -46,8 +46,8 @@ initial begin
 
     RAM1[28]= 32'hD8000000; // halt
 
-    RAM1[117]=32'h0000F0F0; // Sample Number
-    RAM1[186]=32'h00000069; // Sample Number
+    RAM1[106]=32'h00000029; // Sample Number
+    RAM1[117]=32'h00000025; // Sample Number
 
     // // Phase 3
     // RAM1[0] = 32'h08800002; // ldi R1, 2
@@ -101,7 +101,7 @@ initial begin
     // RAM1[303]=32'hA7800000; // jr R15
 end
 
-always @(negedge clk) begin
+always @(posedge clk) begin
     if(Write == 1) begin
         RAM1[Addr_in] <= Data_in;
     end
