@@ -59,8 +59,8 @@ module out_tb;
                 #15 MDRout <= 0; IRin <= 0;
             end
             T3: begin
-                #10 Gra <= 1; Rout <= 1; OutPortin <= 1; Yin <= 1;
-                #15 Gra <= 0; Rout <= 0; OutPortin <= 0; Yin <= 0;
+                #10 Gra <= 1; Rout <= 1; OutPortin <= 1;
+                #15 Gra <= 0; Rout <= 0; OutPortin <= 0;
             end
         endcase
     end
