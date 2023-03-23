@@ -83,7 +83,7 @@ module datapath(
 	RAM ram_mod(clk, Read, Write, MDR_out, MAR_out[8:0], RAM_out);
 	
 	// BUS
-	encoder_32_5 bus_enc ({8'd0, Cout, InPortout, MDRout, PCout, ZLowout, ZHighout, LOout, HIout, R0_15_out_enable}, encoder_out);
+	encoder_32_5 bus_enc ({8'd0, Cout, InPortout, MDRout, PCout, Zlowout, Zhighout, LOout, HIout, R0_15_out_enable}, encoder_out);
 	mux_32_1 bus_mux (R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, R8_out, R9_out, R10_out, R11_out, R12_out, R13_out, R14_out, R15_out, HI_out, LO_out, ZHI_out, ZLO_out, PC_out, MDR_out, InPort_out, C_sign_extend, encoder_out, busout);
 
 	// ALU

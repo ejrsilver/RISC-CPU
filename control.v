@@ -3,11 +3,11 @@
 module control(
 	input clk, clr, stop,
 	input [31:0] IR,
-	output Read, Write, IncPC,
-	output MARin, Zin, PCin, MDRin, IRin, Yin, HIin, LOin, OutPortin,
-	output PCout, Zhighout, Zlowout, MDRout, HIout, LOout, BAout, InPortout, Cout,
-	output CONin, Gra, Grb, Grc, Rin, Rout, Run,
-  output [15:0] R_select
+	output reg Read, Write, IncPC,
+	output reg MARin, Zin, PCin, MDRin, IRin, Yin, HIin, LOin, OutPortin,
+	output reg PCout, Zhighout, Zlowout, MDRout, HIout, LOout, BAout, InPortout, Cout,
+	output reg CONin, Gra, Grb, Grc, Rin, Rout, Run,
+   output reg [15:0] R_select
 );
 
 parameter   _ld = 5'b00000, _ldi = 5'b00001, _st = 5'b00010, _add  = 5'b00011, _sub = 5'b00100, _and = 5'b00101, _or  = 5'b00110, _shr  = 5'b00111,
@@ -18,14 +18,14 @@ parameter   _ld = 5'b00000, _ldi = 5'b00001, _st = 5'b00010, _add  = 5'b00011, _
 parameter Default = 6'd0, T0 = 6'd1, T1 = 6'd2, T2 = 6'd3, A_T3 = 6'd4, A_T4 = 6'd5, A_T5 = 6'd6, N_T3 = 6'd7, N_T4 = 6'd8,
 MD_T3 = 6'd9, MD_T4 = 6'd10, MD_T5 = 6'd11, MD_T6 = 6'd12, LD_T3 = 6'd13, LD_T4 = 6'd14, LD_T5 = 6'd15, LD_T6 = 6'd16, LD_T7 = 6'd17, 
 LDI_T3 = 6'd18, LDI_T4 = 6'd19, LDI_T5 = 6'd20, ST_T3 = 6'd21, ST_T4 = 6'd22, ST_T5 = 6'd23, ST_T6 = 6'd24, ST_T7 = 6'd25,
-B_T3 = 6'd26, B_T4 = 6'd27, B_T5 = 6'd28, B_T6 = 6'd29, JR_T3 = 6'd30, JAL_T3 = 6'd31, JAL_T4 = 6'd32, MFHI_T3 = 6'd33, MFLO_T3 = 6'd34, IN_T3 = 6'd35, OUT_T3 = 6'd36, NOP_T3 = 6'd37, HALT_T3 = 6'd38;
+B_T3 = 6'd26, B_T4 = 6'd27, B_T5 = 6'd28, B_T6 = 6'd29, JR_T3 = 6'd30, JAL_T3 = 6'd31, JAL_T4 = 6'd32, MFHI_T3 = 6'd33, MFLO_T3 = 6'd34, 
+IN_T3 = 6'd35, OUT_T3 = 6'd36, NOP_T3 = 6'd37, HALT_T3 = 6'd38, I_T3 = 6'd39, I_T4 = 6'd40, I_T5 = 6'd41;
 
 reg [5:0] Present_state = Default;
 
 always @(posedge clk, posedge clr, posedge stop) begin
 	if (clr == 1'b1) Present_state = Default;
 	if (stop == 1'b1) Present_state = HALT_T3;
-	if (flag == 1) begin
     case (Present_state)
       Default: Present_state = T0;
       T0: Present_state = T1;
@@ -34,7 +34,7 @@ always @(posedge clk, posedge clr, posedge stop) begin
         case(IR[31:27])
           _add, _sub, _and, _or, _shr, _shra, _shl, _ror, _rol: Present_state = A_T3;
           _neg, _not: Present_state = N_T3;
-          _addi, subi, andi, ori: Present_state = I_T3;
+          _addi, _subi, _andi, _ori: Present_state = I_T3;
           _ld: Present_state = LD_T3;
           _ldi: Present_state = LDI_T3;
           _st: Present_state = ST_T3;
@@ -85,11 +85,11 @@ always @(posedge clk, posedge clr, posedge stop) begin
       JAL_T3: Present_state = JAL_T4;
       JAL_T4: Present_state = T0;
       NOP_T3: Present_state = T0;
+		I_T3: Present_state = I_T4;
+		I_T4: Present_state = I_T5;
+		I_T5: Present_state = T0;
+		default: Present_state = Default;
     endcase
-	  flag = 0;
-  end else begin
-	  flag = 1;
-	end
 end
 
 always @(Present_state) begin
@@ -99,7 +99,7 @@ always @(Present_state) begin
 			PCout <= 0; Zlowout <= 0; Zhighout <= 0; MDRout <= 0; InPortout <= 0; HIout <= 0; LOout <= 0; BAout <= 0;
 			PCin <= 0; Zin <= 0; MDRin <= 0; MARin <= 0; OutPortin <= 0; HIin <= 0; LOin <= 0; IRin <= 0; Yin <= 0;
 			Gra <= 0; Grb <= 0; Grc <= 0; CONin <= 0; Rin <= 0; Rout <= 0;
-			IncPC <= 0; Read <= 0; Write <= 0; Cout <= 0; Run <= 1; R_select < 16'd0;
+			IncPC <= 0; Read <= 0; Write <= 0; Cout <= 0; Run <= 1; R_select <= 16'd0;
 		end
 		T0: begin
 			PCout <= 1; MARin <= 1; IncPC <= 1;
@@ -122,12 +122,27 @@ always @(Present_state) begin
 			#15 Grb <= 0; Rout <= 0; Yin <= 0;
 		end
 		A_T4: begin
-			#10 R5out <= 1; opcode <= 5'b00011; Zin <= 1;
-			#15 R5out <= 0; Zin <= 0;
+			#10 Grc <= 1; Rout <= 1; Zin <= 1;
+			#15 Grc <= 0; Rout <= 0; Zin <= 0;
 		end
 		A_T5: begin
-			#10 Zlowout <= 1; R0in <= 1;
-			#15 Zlowout <= 0; R0in <= 0;
+			#10 Zlowout <= 1; Rin <= 1; Gra <= 1;
+			#15 Zlowout <= 0; Rin <= 0; Gra <= 0;
+		end
+/* ----------------- */
+
+/* --------- addi, subi, andi, ori -------- */
+    I_T3: begin
+			#10 Grb <= 1; Rout <= 1; Yin <= 1;
+			#15 Grb <= 0; Rout <= 0; Yin <= 0;
+		end
+		I_T4: begin
+			#10 Cout <= 1; Zin <= 1;
+			#15 Cout <= 0; Zin <= 0;
+		end
+		I_T5: begin
+			#10 Zlowout <= 1; Gra <= 1; Rin <= 1;
+			#15 Zlowout <= 0; Gra <= 0; Rin <= 0;
 		end
 /* ----------------- */
 
