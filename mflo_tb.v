@@ -1,5 +1,5 @@
 `timescale 1ns/10ps
-module mfhi_tb;
+module mflo_tb;
     reg Clock, flag, Reset;
     reg PCout, Zhighout, Zlowout, MDRout, HIout, LOout, BAout, InPortout, Cout; 
     reg MARin, Zin, PCin, MDRin, IRin, Yin, HIin, LOin, InPortin, OutPortin;
