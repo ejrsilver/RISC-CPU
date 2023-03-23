@@ -1,6 +1,6 @@
 `timescale 1ns/10ps
 module control_tb;
-    reg Clock, Reset;
+    reg Clock, Reset, Stop;
 
     wire [31:0] OutPort_out;
     reg [31:0] InPort_input;
@@ -9,8 +9,8 @@ module control_tb;
 	
     initial begin
         Clock = 0;
-        Reset = 1;
-		#10 Reset = 0;
+        Stop = 0;
+        Reset = 0;
         forever #10 Clock = ~ Clock;
     end
 

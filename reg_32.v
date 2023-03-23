@@ -1,7 +1,7 @@
 module reg_32(input clk, reset, enable, input [31:0] D, output reg [31:0] q);
   initial q = 0;
   
-  always @(posedge clk) begin
+  always @(negedge clk) begin
     if (reset) begin
       q[31:0] = 32'b0;
     end
