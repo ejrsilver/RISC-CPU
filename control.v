@@ -163,7 +163,7 @@ always @(Present_state) begin
     end
     MD_T4: begin
       #5 Grc <= 1; Rout <= 1; Zin <= 1;
-      #10 Grc <= 1; Rout <= 0; Zin <= 0;
+      #10 Grc <= 0; Rout <= 0; Zin <= 0;
     end
     MD_T5: begin
       #5 Zlowout <= 1; LOin <= 1;
