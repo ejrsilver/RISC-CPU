@@ -37,7 +37,7 @@ module datapath(
 
 	// General purpose registers r0-r15
 	wire [31:0] R0_regout;
-	assign R0_out = R0_regout & {32{BAout}};
+	assign R0_out = R0_regout & {32{!BAout}};
 	reg_32 r0 (clk, clr, R0_15_in_enable[0], busout, R0_regout);	
 	reg_32 r1 (clk, clr, R0_15_in_enable[1], busout, R1_out); 
 	reg_32 r2 (clk, clr, R0_15_in_enable[2], busout, R2_out);
