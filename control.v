@@ -88,6 +88,7 @@ always @(posedge clk, posedge clr, posedge stop) begin
 		I_T3: Present_state = I_T4;
 		I_T4: Present_state = I_T5;
 		I_T5: Present_state = T0;
+		HALT_T3: Present_state = HALT_T3;
 		default: Present_state = Default;
     endcase
 end
@@ -158,12 +159,12 @@ always @(Present_state) begin
 
 /* --------- mul, div -------- */
     MD_T3: begin
-      #5 Grb <= 1; Rout <= 1; Yin <= 1;
-      #10 Grb <= 0; Rout <= 0; Yin <= 0;
+      #5 Gra <= 1; Rout <= 1; Yin <= 1;
+      #10 Gra <= 0; Rout <= 0; Yin <= 0;
     end
     MD_T4: begin
-      #5 Grc <= 1; Rout <= 1; Zin <= 1;
-      #10 Grc <= 0; Rout <= 0; Zin <= 0;
+      #5 Grb <= 1; Rout <= 1; Zin <= 1;
+      #10 Grb <= 0; Rout <= 0; Zin <= 0;
     end
     MD_T5: begin
       #5 Zlowout <= 1; LOin <= 1;
