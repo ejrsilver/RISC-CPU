@@ -3,6 +3,7 @@ temp.v
 datapath_tb.qpf
 datapath_tb.qws
 datapath_tb.qsf
+Phase3.ipinfo
 db/
 incremental_db/
 output_files/

@@ -10,7 +10,7 @@ module alu(
 parameter   _ld = 5'b00000, _ldi = 5'b00001, _st = 5'b00010, _add  = 5'b00011, _sub = 5'b00100, _and = 5'b00101, _or  = 5'b00110, _shr  = 5'b00111, 
             _shra = 5'b01000, _shl = 5'b01001, _ror = 5'b01010, _rol = 5'b01011, _addi = 5'b01100, _andi = 5'b01101, _ori = 5'b01110, _mul = 5'b01111, 
 			_div = 5'b10000, _neg  = 5'b10001, _not  = 5'b10010, _branch = 5'b10011, _jr = 5'b10100, _jal = 5'b10101, _in = 5'b10110, _out = 5'b10111, 
-			_mfhi = 5'b11000, _mflo = 5'b11001, _nop = 5'b11010, _halt = 5'b11011;
+			_mfhi = 5'b11000, _mflo = 5'b11001, _nop = 5'b11010, _halt = 5'b11011, _subi = 5'b11100;
 
 wire[31:0]  or_out,    and_out, rol_out,  ror_out,   shl_out,   shr_out,
             shra_out,  not_out, neg_out,  HImul_out, LOmul_out, HIdiv_out,
@@ -44,11 +44,11 @@ always @(*) begin
 		end
 		1'b0: begin
 		case (opcode)
-			_add: begin
+			_add, _ld, _ldi, _st, _addi: begin
 				LO <= add_out;
 				HI <= 32'd0;
 			end
-			_sub: begin
+			_sub, _subi: begin
 				LO <= sub_out;
 				HI <= 32'd0;
 			end
@@ -80,7 +80,7 @@ always @(*) begin
 				LO <= rol_out;
 				HI <= 32'd0;
 			end
-			 _mul: begin
+			_mul: begin
 				LO <= LOmul_out;
 				HI <= HImul_out;
 			end
@@ -94,10 +94,6 @@ always @(*) begin
 			end
 			_not: begin
 				LO <= not_out;
-				HI <= 32'd0;
-			end
-			_ld, _ldi, _st, _addi: begin
-				LO <= add_out;
 				HI <= 32'd0;
 			end
 			_branch: begin
