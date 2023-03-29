@@ -265,7 +265,7 @@ always @(Present_state) begin
 /* -------- jal --------- */
 		JAL_T3: begin
       // Select R15 manually, overriding select and encode logic
-			#5 R_select <= 16'h4000; PCout <= 1;
+			#5 R_select <= 16'h8000; PCout <= 1;
 			#10 R_select <= 16'h0000; PCout <= 0;
 		end
     JAL_T4: begin
