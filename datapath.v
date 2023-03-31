@@ -1,7 +1,7 @@
 `timescale 1ns/10ps
-module datapath(input clk, clr, stop, input [31:0] InPort_input, output [31:0] OutPort_out);
-wire [31:0] busout, R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, R8_out, R9_out, R10_out, R11_out, R12_out, R13_out, R14_out, R15_out, PC_out, ZHI_out, ZLO_out, HI_out, LO_out, MDR_out, Y_out, IR_out, C_data, C_sign_extend, RAM_out, C_out_HI, C_out_LO, MAR_out, InPort_out;
-wire Read, Write, IncPC, MARin, Zin, PCin, MDRin, IRin, Yin, HIin, LOin, InPortin, OutPortin, PCout, Zhighout, Zlowout, MDRout, HIout, LOout, BAout, InPortout, Cout, CONin, Gra, Grb, Grc, Rin, Rout, Run, branch_flag;
+module datapath(input clk, clr, stop, input [31:0] InPort_input, output reg [31:0] OutPort_out, output Run);
+wire [31:0] OutPortout, busout, R0_out, R1_out, R2_out, R3_out, R4_out, R5_out, R6_out, R7_out, R8_out, R9_out, R10_out, R11_out, R12_out, R13_out, R14_out, R15_out, PC_out, ZHI_out, ZLO_out, HI_out, LO_out, MDR_out, Y_out, IR_out, C_data, C_sign_extend, RAM_out, C_out_HI, C_out_LO, MAR_out, InPort_out;
+wire Read, Write, IncPC, MARin, Zin, PCin, MDRin, IRin, Yin, HIin, LOin, OutPortin, PCout, Zhighout, Zlowout, MDRout, HIout, LOout, BAout, InPortout, Cout, CONin, Gra, Grb, Grc, Rin, Rout, branch_flag;
 wire [4:0] encoder_out, opcode;
 wire [15:0] R0_15_in_enable_IR, R0_15_out_enable_IR, R_select;
 reg [15:0] R0_15_in_enable, R0_15_out_enable;
@@ -41,8 +41,16 @@ reg_32 LO (clk, clr, LOin, busout, LO_out);
 reg_32 Z_HI (clk, clr, Zin, C_out_HI, ZHI_out);
 reg_32 Z_LO (clk, clr, Zin, C_out_LO, ZLO_out);
 reg_32 Y (clk, clr, Yin, busout, Y_out);
-reg_32 inport(clk, clr, 1'b1, InPort_input, InPort_out);
-reg_32 outport(clk, clr, OutPortin, busout, OutPort_out);
+
+reg_32 inport(clk, clr, 1'b1, 32'h000000FF & InPort_input, InPort_out);
+reg_32 outport(clk, clr, OutPortin, busout, OutPortout);
+wire [7:0] disp0, disp1;
+seg_7_out seg0(OutPortout[3:0], disp0);
+seg_7_out seg1(OutPortout[7:4], disp1);
+
+always @(*)
+	OutPort_out <= {16'b0, disp1, disp0};
+
 // PC
 wire [31:0] PC_select;
 mux_2_1 PC_MUX (busout, C_out_LO, IncPC, PC_select);
