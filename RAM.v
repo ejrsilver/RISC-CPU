@@ -43,9 +43,32 @@ initial begin
   RAM1[37]= 32'h0D300000; // ldi R10, 0(R6)
   RAM1[38]= 32'h0DB80000; // ldi R11, 0(R7)
   RAM1[39]= 32'hAD000000; // jal R10
-  RAM1[40]= 32'hD8000000; // halt
+  
+  RAM1[40]= 32'hB2000000; // in R4
+  RAM1[41]= 32'h12000095; // st $95, R4
+  RAM1[42]= 32'h0880002D; // ldi R1, $2D
+  RAM1[43]= 32'h0B800001; // ldi R7, 1
+  RAM1[44]= 32'h0A800028; // ldi R5, 40
+  RAM1[45]= 32'hBA000000; // out R4
+  RAM1[46]= 32'h0AAFFFFF; // ldi R5, -1(R5)
+  RAM1[47]= 32'h9A800008; // brzr R5, 8
+  RAM1[48]= 32'h030000F0; // ld R6, $F0
+  RAM1[49]= 32'h0B37FFFF; // ldi R6, -1(R6)
+  RAM1[50]= 32'hD0000000; // nop
+  RAM1[51]= 32'h9B0FFFFD; // brnz R6, -3
+  RAM1[52]= 32'h3A238000; // shr R4, R4, R7
+  RAM1[53]= 32'h9A0FFFF7; // brnz R4, -9
+  RAM1[54]= 32'h02000095; // ld R4, $95
+  RAM1[55]= 32'hA0800000; // jr R1
+  
+  RAM1[56]= 32'h0A0000A5; // ldi R4, $A5
+  RAM1[57]= 32'hBA000000; // out R4
+  RAM1[58]= 32'hD8000000; // halt
+  
   RAM1[82]= 32'h00000026; // $26 (location $52)
   RAM1[104]=32'h00000055; // $55 (location $68)
+  RAM1[240]=32'h0000FFFF; // $FFFF (location $F0)
+  
   RAM1[300]=32'h1EC50000; // add R13, R8, R10 (location $12C)
   RAM1[301]=32'h264D8000; // sub R12, R9, R11
   RAM1[302]=32'h26EE0000; // sub R13, R13, R12
