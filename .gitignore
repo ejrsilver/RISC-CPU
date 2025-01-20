@@ -1,10 +1,5 @@
-temp.v
 *.bak
-datapath_tb.qpf
-datapath_tb.qws
-datapath_tb.qsf
-Phase3.ipinfo
-Phase4.ipinfo
+*.qws
 db/
 incremental_db/
 output_files/
